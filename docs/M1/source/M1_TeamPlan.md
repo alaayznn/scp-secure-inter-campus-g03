@@ -20,14 +20,15 @@ The user may perform most implementation. Teammate review/testing is credited on
 | State | Work |
 | Actual | All 11 assignment pages were reviewed, the empty SCP workspace and available tools checked, and group/membership details confirmed with the reported two-member approval. |
 | Actual preparation | Editable English M1 designs and baseline lab files are prepared. Document preparation is not proof of completed member review or runtime testing. Generated outputs/static results are listed in README and static review log. |
-| Planned, not performed | Teammate review, Docker/WSL setup, image build, six-node startup, route/isolation checks, HTTP baseline and real WAN capture. |
+| Actual environment setup | WSL and Docker Desktop installed; official Compose configuration validation passed. Windows restart is pending. No Docker engine, image build, running lab or PCAP has been verified. |
+| Planned, not performed | Teammate review, image build, six-node startup, route/isolation checks, HTTP baseline and real WAN capture. |
 | Planned, not approved | Acceptance of independently authored lab/ in place of instructor kit; private repository instructor access. |
 | Future, excluded | PKI issuance, crypto tool, TLS deployment, VPN, KDC implementation and attacks belong to later milestones. |
 
 ## Schedule and dependencies
 Assignment dates: M1 06/11/2026; M2 20/11/2026; M3 11/12/2026; M4 25/12/2026. On preparation date 07/11/2026, M1's original deadline has passed. Confirm late-submission handling with instructor; no new date or waiver is assumed.
 
-Next authorized sequence: finish available M1 preparation -> user permission for installation/runtime -> build image -> verify six nodes and isolation -> prove plaintext HTTP and capture -> record evidence and actual tester -> peer review -> secret/history scan -> private GitHub access verification -> annotated M1 tag. This is an order of work, not a promised timetable.
+Next sequence: manual Windows restart -> confirm Docker engine -> build image -> verify six nodes and isolation -> prove plaintext HTTP and capture -> record actual tester/results -> peer review -> secret/history scan -> instructor access verification -> annotated M1 tag. Runtime work is authorized; the restart remains manual. This is an order of work, not a promised timetable.
 
 ## Git, branches and releases
 Use one independent private SCP repository. Initial branch main; future short branches such as m1/docs and m1/baseline use small factual commits and real review. No fabricated history or teammate authorship. .gitignore precedes first commit; secrets never enter Git. Root storage stays outside repository/mounts.

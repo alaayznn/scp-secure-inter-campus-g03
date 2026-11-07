@@ -39,7 +39,9 @@ def main():
                          'net.ipv4.conf.all.rp_filter': '0', 'net.ipv4.conf.default.rp_filter': '0',
                          'net.ipv6.conf.all.disable_ipv6': '1'},
             'volumes': ['..:/work:ro', './roles:/opt/scp/roles:ro'],
-            'extra_hosts': hosts,
+            # Compose interpolates values, not mapping keys. The list form lets
+            # both the group-derived hostname and address resolve correctly.
+            'extra_hosts': [f'{hostname}:{ip}' for hostname, ip in hosts.items()],
             'networks': {n: {'ipv4_address': ip} for n, ip in nets.items()},
             'healthcheck': {'test': ['CMD', 'bash', '/opt/scp/roles/healthcheck.sh'],
                             'interval': '10s', 'timeout': '3s', 'retries': 6},

@@ -1,6 +1,6 @@
 {
-  "utc": "2026-11-07T20:05:58.225972+00:00",
-  "scope": "STATIC ONLY; no Docker schema validation/build/runtime/packet capture performed",
+  "utc": "2026-11-07T20:14:23.821077+00:00",
+  "scope": "STATIC AND COMPOSE CONFIG ONLY where available; no image build/runtime/packet capture performed",
   "checks": [
     {
       "check": "confirmed_group",
@@ -41,6 +41,16 @@
       "check": "group_env_example",
       "result": "PASS",
       "detail": "Example uses real group. A real .env is local-only and excluded by .gitignore."
+    },
+    {
+      "check": "official_compose_schema",
+      "result": "PASS",
+      "detail": "Official Compose config parser; client-only operation, no engine or container startup."
+    },
+    {
+      "check": "compose_resolved_group_values",
+      "result": "PASS",
+      "detail": "Group FQDNs/IPs and six services/three internal networks checked after interpolation."
     },
     {
       "check": "baseline_no_future_vpn",
@@ -176,15 +186,15 @@
     "M1_ProtocolDesign.pdf": "3ab2041585e2f6c642deeddd11e9f460643fb3b86b3a17dcbe437b0d2d460d72",
     "M1_Requirements.pdf": "a58efa312e1d4a29afa20dc97b012de0fd4123653ddac05a07aa9013eceff809",
     "M1_STRIDE.pdf": "fb088da5883e8bcf25863039c5b3dd2cb14cb2fde639a000ae1012fe7847a739",
-    "M1_TeamPlan.pdf": "2ebf73982969518231e0207a76f6b7d0fe809eb6b284e0ab415a96a869e77af8",
+    "M1_TeamPlan.pdf": "e6c617037ee4de28f72a12af249aedcbc5dc5d2a7505c171c3bcb1d520a9138d",
     "M1_Topology_Trust.pdf": "326c8b16fad80d12a0418dd21314920bd230d14b51986c9972edb14760486ea1"
   },
   "visual_review": {
     "status": "PASS",
     "reviewer": "Document visual QA; member review not yet performed",
-    "utc": "2026-11-07T20:05:58.611954+00:00",
+    "utc": "2026-11-07T20:14:23.951901+00:00",
     "pages_reviewed": 19,
-    "method": "All final PDF pages rendered and visually reviewed. Revised TeamPlan rendered at 120 dpi and both pages rechecked; other five PDFs retain their previously reviewed hashes. Tables, diagrams and Arabic names are readable.",
-    "scope": "Document appearance only; no runtime or teammate test claimed."
+    "method": "Revised two-page TeamPlan rendered at 110 dpi and visually checked. Other five PDF hashes retain previous visual review. Diagrams, tables, original Arabic names and page breaks checked.",
+    "scope": "PDF appearance only; no running lab or teammate test claimed."
   }
 }

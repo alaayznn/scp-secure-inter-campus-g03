@@ -1,0 +1,36 @@
+{
+  "utc": "2026-11-07T20:13:59.358850+00:00",
+  "host": {
+    "os": "Windows 11 Home Single Language",
+    "build": "26200.9711",
+    "firmware_virtualization_enabled": true,
+    "hypervisor_present": false,
+    "virtual_machine_platform_enabled": true,
+    "windows_cbs_restart_pending": true
+  },
+  "installed": {
+    "wsl": "3.0.3.0",
+    "wsl_kernel": "6.18.54.1-1",
+    "docker_desktop": "4.98.0.245422",
+    "docker_cli": "29.9.2",
+    "compose": "v5.6.1"
+  },
+  "docker_installer": {
+    "source": "https://desktop.docker.com/win/main/amd64/245422/Docker%20Desktop%20Installer.exe",
+    "bytes": 623748528,
+    "sha256": "cd6273d9eaa4f07fa7593fc6813d37e1004381cebc3f26047a2554fa5db24388",
+    "signature": "Valid; Docker Inc",
+    "exit_code": 0,
+    "mode": "per-user; WSL2 backend; no automatic license acceptance"
+  },
+  "validation": {
+    "compose_config": "PASS after extra_hosts interpolation fix",
+    "resolved_group_hostnames_and_addresses": "PASS; Group 03",
+    "engine_started": false,
+    "image_built_or_pulled": false,
+    "lab_started": false,
+    "pcap_created": false,
+    "automatic_reboot_performed": false
+  },
+  "next_action": "Save work and restart Windows manually; launch Docker Desktop and review any first-run prompts; then verify engine and build/run the baseline."
+}

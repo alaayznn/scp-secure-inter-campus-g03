@@ -62,7 +62,9 @@ Private repository: [alaayznn/scp-secure-inter-campus-g03](https://github.com/al
 
 ## Tool gaps and estimates
 
-Runtime installation was authorized on 07/11/2026. WSL 3.0.3.0 is installed and the Virtual Machine Platform feature is enabled, but Windows reports a pending restart and WSL2 cannot start yet. Firmware virtualization was confirmed enabled. Docker Desktop installation is in progress. Git, Python/reportlab/pypdf/Poppler and Bash syntax checking are available. Wireshark GUI is optional: container tshark can inspect captures. No automatic reboot will be performed.
+Runtime installation was authorized on 07/11/2026. WSL 3.0.3.0 and Docker Desktop 4.98.0.245422 are installed. Docker CLI is 29.9.2; Compose is v5.6.1. The Virtual Machine Platform feature is enabled, but Windows reports a pending restart and WSL2 cannot start yet; firmware virtualization was confirmed enabled. Official Compose configuration validation now passes, including resolved Group 03 hostnames/addresses. Git, Python/reportlab/pypdf/Poppler and Bash syntax checking are available. Wireshark GUI is optional: container tshark can inspect captures. No automatic reboot was performed.
+
+After saving work, restart Windows manually. Then launch Docker Desktop; review any first-run license/onboarding prompts yourself and wait until its engine is running. Continue with the lab build/verification steps in `lab/README.md`. Installation and Compose parsing do not establish a working Docker engine, image build, running lab or valid PCAP.
 
 Planning allowances only, not measured download sizes: Docker Desktop installer roughly 0.5-1 GB; WSL/kernel/distribution roughly 0.5-2 GB; Ubuntu base plus apt tools and testssl roughly 0.3-1.5 GB transferred depending on architecture/cache, with roughly 2-5 GB image/build storage. Reserve at least the assignment's 10 GB free disk; 15-20 GB allows WSL/image/cache growth. Observed free space during preparation: C: about 38.5 GB, D: about 145.5 GB. Setup time depends on downloads, virtualization and any Windows restart requirement. Automatic reboot is not permitted.
 

@@ -1,6 +1,7 @@
 """Meaningful static M1 consistency checks. Never executes role scripts or Docker."""
 import json
 import hashlib
+import os
 import re
 import shutil
 import subprocess
@@ -31,6 +32,24 @@ def main():
     check('address_and_attachment_plan', all({n:v['ipv4_address'] for n,v in services[r]['networks'].items()}==v for r,v in expected_ip.items()), 'Exact specification suffixes checked, including attacker WAN-only.')
     env=(ROOT/'lab/.env.example').read_text()
     check('group_env_example', 'GROUP_ID=03\n' in env and 'GROUP_NUM=3\n' in env, 'Example uses real group. A real .env is local-only and excluded by .gitignore.')
+    docker=shutil.which('docker')
+    if not docker and os.environ.get('LOCALAPPDATA'):
+        candidate=Path(os.environ['LOCALAPPDATA'])/'Programs/DockerDesktop/resources/bin/docker.exe'
+        docker=str(candidate) if candidate.is_file() else None
+    if docker and (ROOT/'lab/.env').exists():
+        rendered=subprocess.run([docker,'compose','--project-directory',str(ROOT/'lab'),'-f',str(ROOT/'lab/docker-compose.yml'),'--env-file',str(ROOT/'lab/.env'),'config','--format','json'],capture_output=True,text=True,encoding='utf-8',timeout=30)
+        check('official_compose_schema',rendered.returncode==0,'Official Compose config parser; client-only operation, no engine or container startup.')
+        if rendered.returncode==0:
+            resolved=json.loads(rendered.stdout)
+            hosts=resolved['services']['client-br']['extra_hosts']
+            if isinstance(hosts,list):
+                hosts=dict(item.split('=',1) if '=' in item else item.split(':',1) for item in hosts)
+            correct=(hosts.get('portal.g03.scp.lab')=='10.3.1.10' and hosts.get('pki.g03.scp.lab')=='10.3.1.10'
+                and resolved['services']['gw-hq']['networks']['wan']['ipv4_address']=='172.16.3.10'
+                and len(resolved['services'])==6 and all(n['internal'] for n in resolved['networks'].values()))
+            check('compose_resolved_group_values',correct,'Group FQDNs/IPs and six services/three internal networks checked after interpolation.')
+    else:
+        checks.append({'check':'official_compose_schema','result':'NOT_TESTED','detail':'Requires an installed Docker CLI and local lab/.env; no installation or startup attempted by this checker.'})
     check('baseline_no_future_vpn', not (ROOT/'ipsec/gw-hq/swanctl.conf').exists() and not (ROOT/'ipsec/gw-branch/swanctl.conf').exists(), 'Fixed swanctl paths deliberately absent in M1.')
     entry=(ROOT/'lab/roles/baseline-entrypoint.sh').read_text()
     check('baseline_routes_and_marker', all(s in entry for s in ('172.16.$g.20','172.16.$g.10','10.$g.1.1','10.$g.2.1','SCP-M1-G%s-HTTP-CLEAR','ip route del default','ip xfrm policy','nginx -t')), 'Static route/marker/control declarations checked; shell not run.')
@@ -69,7 +88,7 @@ def main():
         previous=json.loads(path.read_text(encoding='utf-8'))
         if previous.get('pdf_sha256')==hashes:
             visual=previous.get('visual_review',visual)
-    log={'utc':datetime.now(timezone.utc).isoformat(),'scope':'STATIC ONLY; no Docker schema validation/build/runtime/packet capture performed','checks':checks,'pdf_pages':pagecounts,'pdf_sha256':hashes,'visual_review':visual}
+    log={'utc':datetime.now(timezone.utc).isoformat(),'scope':'STATIC AND COMPOSE CONFIG ONLY where available; no image build/runtime/packet capture performed','checks':checks,'pdf_pages':pagecounts,'pdf_sha256':hashes,'visual_review':visual}
     path.write_text(json.dumps(log,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(f'{len(checks)} static checks; failures: {sum(c["result"]=="FAIL" for c in checks)}. Runtime NOT TESTED.')
     for c in checks:
