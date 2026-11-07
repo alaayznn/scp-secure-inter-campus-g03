@@ -1,0 +1,489 @@
+{
+  "name": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-m1",
+  "services": {
+    "gw-hq": {
+      "build": {
+        "context": "./docker"
+      },
+      "image": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-lab:ubuntu24.04-m1",
+      "hostname": "gw-hq",
+      "init": true,
+      "restart": "no",
+      "environment": {
+        "ROLE": "gw-hq",
+        "GROUP_ID": "${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}",
+        "GROUP_NUM": "${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}",
+        "LAB_MODE": "baseline"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_ADMIN",
+        "NET_RAW",
+        "SETUID",
+        "SETGID",
+        "CHOWN",
+        "DAC_OVERRIDE",
+        "KILL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "sysctls": {
+        "net.ipv4.ip_forward": "1",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "0",
+        "net.ipv6.conf.all.disable_ipv6": "1"
+      },
+      "volumes": [
+        "..:/work:ro",
+        "./roles:/opt/scp/roles:ro",
+        "../evidence:/evidence:rw"
+      ],
+      "extra_hosts": {
+        "gw-hq": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "gw-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "portal.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "pki.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+      },
+      "networks": {
+        "wan": {
+          "ipv4_address": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10"
+        },
+        "hq": {
+          "ipv4_address": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.1"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "bash",
+          "/opt/scp/roles/healthcheck.sh"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 6
+      }
+    },
+    "gw-branch": {
+      "build": {
+        "context": "./docker"
+      },
+      "image": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-lab:ubuntu24.04-m1",
+      "hostname": "gw-branch",
+      "init": true,
+      "restart": "no",
+      "environment": {
+        "ROLE": "gw-branch",
+        "GROUP_ID": "${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}",
+        "GROUP_NUM": "${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}",
+        "LAB_MODE": "baseline"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_ADMIN",
+        "NET_RAW",
+        "SETUID",
+        "SETGID",
+        "CHOWN",
+        "DAC_OVERRIDE",
+        "KILL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "sysctls": {
+        "net.ipv4.ip_forward": "1",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "0",
+        "net.ipv6.conf.all.disable_ipv6": "1"
+      },
+      "volumes": [
+        "..:/work:ro",
+        "./roles:/opt/scp/roles:ro"
+      ],
+      "extra_hosts": {
+        "gw-hq": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "gw-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "portal.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "pki.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+      },
+      "networks": {
+        "wan": {
+          "ipv4_address": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20"
+        },
+        "branch": {
+          "ipv4_address": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.1"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "bash",
+          "/opt/scp/roles/healthcheck.sh"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 6
+      }
+    },
+    "web-hq": {
+      "build": {
+        "context": "./docker"
+      },
+      "image": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-lab:ubuntu24.04-m1",
+      "hostname": "web-hq",
+      "init": true,
+      "restart": "no",
+      "environment": {
+        "ROLE": "web-hq",
+        "GROUP_ID": "${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}",
+        "GROUP_NUM": "${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}",
+        "LAB_MODE": "baseline"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_ADMIN",
+        "NET_RAW",
+        "SETUID",
+        "SETGID",
+        "CHOWN",
+        "DAC_OVERRIDE",
+        "KILL",
+        "NET_BIND_SERVICE"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "sysctls": {
+        "net.ipv4.ip_forward": "0",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "0",
+        "net.ipv6.conf.all.disable_ipv6": "1"
+      },
+      "volumes": [
+        "..:/work:ro",
+        "./roles:/opt/scp/roles:ro"
+      ],
+      "extra_hosts": {
+        "gw-hq": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "gw-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "portal.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "pki.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+      },
+      "networks": {
+        "hq": {
+          "ipv4_address": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "bash",
+          "/opt/scp/roles/healthcheck.sh"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 6
+      }
+    },
+    "kdc": {
+      "build": {
+        "context": "./docker"
+      },
+      "image": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-lab:ubuntu24.04-m1",
+      "hostname": "kdc",
+      "init": true,
+      "restart": "no",
+      "environment": {
+        "ROLE": "kdc",
+        "GROUP_ID": "${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}",
+        "GROUP_NUM": "${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}",
+        "LAB_MODE": "baseline"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_ADMIN",
+        "NET_RAW",
+        "SETUID",
+        "SETGID",
+        "CHOWN",
+        "DAC_OVERRIDE",
+        "KILL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "sysctls": {
+        "net.ipv4.ip_forward": "0",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "0",
+        "net.ipv6.conf.all.disable_ipv6": "1"
+      },
+      "volumes": [
+        "..:/work:ro",
+        "./roles:/opt/scp/roles:ro"
+      ],
+      "extra_hosts": {
+        "gw-hq": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "gw-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "portal.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "pki.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+      },
+      "networks": {
+        "hq": {
+          "ipv4_address": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "bash",
+          "/opt/scp/roles/healthcheck.sh"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 6
+      }
+    },
+    "client-br": {
+      "build": {
+        "context": "./docker"
+      },
+      "image": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-lab:ubuntu24.04-m1",
+      "hostname": "client-br",
+      "init": true,
+      "restart": "no",
+      "environment": {
+        "ROLE": "client-br",
+        "GROUP_ID": "${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}",
+        "GROUP_NUM": "${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}",
+        "LAB_MODE": "baseline"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_ADMIN",
+        "NET_RAW",
+        "SETUID",
+        "SETGID",
+        "CHOWN",
+        "DAC_OVERRIDE",
+        "KILL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "sysctls": {
+        "net.ipv4.ip_forward": "0",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "0",
+        "net.ipv6.conf.all.disable_ipv6": "1"
+      },
+      "volumes": [
+        "..:/work:ro",
+        "./roles:/opt/scp/roles:ro"
+      ],
+      "extra_hosts": {
+        "gw-hq": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "gw-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "portal.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "pki.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+      },
+      "networks": {
+        "branch": {
+          "ipv4_address": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "bash",
+          "/opt/scp/roles/healthcheck.sh"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 6
+      }
+    },
+    "attacker": {
+      "build": {
+        "context": "./docker"
+      },
+      "image": "scp-g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}-lab:ubuntu24.04-m1",
+      "hostname": "attacker",
+      "init": true,
+      "restart": "no",
+      "environment": {
+        "ROLE": "attacker",
+        "GROUP_ID": "${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}",
+        "GROUP_NUM": "${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}",
+        "LAB_MODE": "baseline"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "cap_add": [
+        "NET_ADMIN",
+        "NET_RAW",
+        "SETUID",
+        "SETGID",
+        "CHOWN",
+        "DAC_OVERRIDE",
+        "KILL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "sysctls": {
+        "net.ipv4.ip_forward": "0",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "0",
+        "net.ipv6.conf.all.disable_ipv6": "1"
+      },
+      "volumes": [
+        "..:/work:ro",
+        "./roles:/opt/scp/roles:ro"
+      ],
+      "extra_hosts": {
+        "gw-hq": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "gw-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.10",
+        "gw-branch.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.20",
+        "web-hq.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "kdc.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.20",
+        "client-br.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.10",
+        "attacker.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66",
+        "portal.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10",
+        "pki.g${GROUP_ID:?Copy .env.example to .env and verify GROUP_ID}.scp.lab": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.10"
+      },
+      "networks": {
+        "wan": {
+          "ipv4_address": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.66"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "bash",
+          "/opt/scp/roles/healthcheck.sh"
+        ],
+        "interval": "10s",
+        "timeout": "3s",
+        "retries": 6
+      }
+    }
+  },
+  "networks": {
+    "wan": {
+      "driver": "bridge",
+      "internal": true,
+      "enable_ipv6": false,
+      "driver_opts": {
+        "com.docker.network.bridge.enable_ip_masquerade": "false"
+      },
+      "ipam": {
+        "config": [
+          {
+            "subnet": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.0/24",
+            "gateway": "172.16.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.254"
+          }
+        ]
+      }
+    },
+    "hq": {
+      "driver": "bridge",
+      "internal": true,
+      "enable_ipv6": false,
+      "driver_opts": {
+        "com.docker.network.bridge.enable_ip_masquerade": "false"
+      },
+      "ipam": {
+        "config": [
+          {
+            "subnet": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.0/24",
+            "gateway": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.1.254"
+          }
+        ]
+      }
+    },
+    "branch": {
+      "driver": "bridge",
+      "internal": true,
+      "enable_ipv6": false,
+      "driver_opts": {
+        "com.docker.network.bridge.enable_ip_masquerade": "false"
+      },
+      "ipam": {
+        "config": [
+          {
+            "subnet": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.0/24",
+            "gateway": "10.${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}.2.254"
+          }
+        ]
+      }
+    }
+  }
+}

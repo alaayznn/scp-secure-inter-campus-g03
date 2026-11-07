@@ -1,0 +1,190 @@
+{
+  "utc": "2026-11-07T20:05:58.225972+00:00",
+  "scope": "STATIC ONLY; no Docker schema validation/build/runtime/packet capture performed",
+  "checks": [
+    {
+      "check": "confirmed_group",
+      "result": "PASS",
+      "detail": "User confirmed G3; normalized 03/3."
+    },
+    {
+      "check": "member_records",
+      "result": "PASS",
+      "detail": "Two names/IDs supplied by user; user reports instructor approval for two-member exception only."
+    },
+    {
+      "check": "six_nodes_three_networks",
+      "result": "PASS",
+      "detail": "Exact node/network inventory checked."
+    },
+    {
+      "check": "network_isolation_declarations",
+      "result": "PASS",
+      "detail": "Static declarations only; not runtime proof."
+    },
+    {
+      "check": "no_host_exposure",
+      "result": "PASS",
+      "detail": "No published port, host network, privileged flag or Docker socket."
+    },
+    {
+      "check": "mount_scope",
+      "result": "PASS",
+      "detail": "Repository read-only everywhere; only gw-hq evidence writable. Root key must be outside repository."
+    },
+    {
+      "check": "address_and_attachment_plan",
+      "result": "PASS",
+      "detail": "Exact specification suffixes checked, including attacker WAN-only."
+    },
+    {
+      "check": "group_env_example",
+      "result": "PASS",
+      "detail": "Example uses real group. A real .env is local-only and excluded by .gitignore."
+    },
+    {
+      "check": "baseline_no_future_vpn",
+      "result": "PASS",
+      "detail": "Fixed swanctl paths deliberately absent in M1."
+    },
+    {
+      "check": "baseline_routes_and_marker",
+      "result": "PASS",
+      "detail": "Static route/marker/control declarations checked; shell not run."
+    },
+    {
+      "check": "bash_syntax/baseline-entrypoint.sh",
+      "result": "PASS",
+      "detail": "bash -n only; no script execution."
+    },
+    {
+      "check": "bash_syntax/capture-baseline.sh",
+      "result": "PASS",
+      "detail": "bash -n only; no script execution."
+    },
+    {
+      "check": "bash_syntax/healthcheck.sh",
+      "result": "PASS",
+      "detail": "bash -n only; no script execution."
+    },
+    {
+      "check": "bash_syntax/verify-baseline.sh",
+      "result": "PASS",
+      "detail": "bash -n only; no script execution."
+    },
+    {
+      "check": "bash_syntax/wan-iface.sh",
+      "result": "PASS",
+      "detail": "bash -n only; no script execution."
+    },
+    {
+      "check": "deliverable/M1_Requirements",
+      "result": "PASS",
+      "detail": "PDF and editable Markdown retained."
+    },
+    {
+      "check": "pdf_text_and_pages/M1_Requirements",
+      "result": "PASS",
+      "detail": "All pages have extractable text; visual review is separate."
+    },
+    {
+      "check": "deliverable/M1_Topology_Trust",
+      "result": "PASS",
+      "detail": "PDF and editable Markdown retained."
+    },
+    {
+      "check": "pdf_text_and_pages/M1_Topology_Trust",
+      "result": "PASS",
+      "detail": "All pages have extractable text; visual review is separate."
+    },
+    {
+      "check": "deliverable/M1_PKI_Design",
+      "result": "PASS",
+      "detail": "PDF and editable Markdown retained."
+    },
+    {
+      "check": "pdf_text_and_pages/M1_PKI_Design",
+      "result": "PASS",
+      "detail": "All pages have extractable text; visual review is separate."
+    },
+    {
+      "check": "deliverable/M1_ProtocolDesign",
+      "result": "PASS",
+      "detail": "PDF and editable Markdown retained."
+    },
+    {
+      "check": "pdf_text_and_pages/M1_ProtocolDesign",
+      "result": "PASS",
+      "detail": "All pages have extractable text; visual review is separate."
+    },
+    {
+      "check": "deliverable/M1_STRIDE",
+      "result": "PASS",
+      "detail": "PDF and editable Markdown retained."
+    },
+    {
+      "check": "pdf_text_and_pages/M1_STRIDE",
+      "result": "PASS",
+      "detail": "All pages have extractable text; visual review is separate."
+    },
+    {
+      "check": "deliverable/M1_TeamPlan",
+      "result": "PASS",
+      "detail": "PDF and editable Markdown retained."
+    },
+    {
+      "check": "pdf_text_and_pages/M1_TeamPlan",
+      "result": "PASS",
+      "detail": "All pages have extractable text; visual review is separate."
+    },
+    {
+      "check": "fr_sr_coverage",
+      "result": "PASS",
+      "detail": "FR01-12 and SR01-14 present."
+    },
+    {
+      "check": "no_example_group_07",
+      "result": "PASS",
+      "detail": "No example group 07 identities/addresses in PDFs."
+    },
+    {
+      "check": "actual_group_pdf_addresses",
+      "result": "PASS",
+      "detail": "Actual G3 values extracted from final PDF."
+    },
+    {
+      "check": "lab_threat_count",
+      "result": "PASS",
+      "detail": "14 threat entries, >=8 required; contents reviewed separately."
+    },
+    {
+      "check": "no_fake_pcap",
+      "result": "PASS",
+      "detail": "Baseline capture remains mandatory and absent; this PASS means no fake evidence, not capture acceptance."
+    }
+  ],
+  "pdf_pages": {
+    "M1_Requirements": 4,
+    "M1_Topology_Trust": 3,
+    "M1_PKI_Design": 3,
+    "M1_ProtocolDesign": 5,
+    "M1_STRIDE": 2,
+    "M1_TeamPlan": 2
+  },
+  "pdf_sha256": {
+    "M1_PKI_Design.pdf": "d7a68e07c6ddb4b30824215818b1c0e051db2b29084f1b9f9744ea79e7f4b83e",
+    "M1_ProtocolDesign.pdf": "3ab2041585e2f6c642deeddd11e9f460643fb3b86b3a17dcbe437b0d2d460d72",
+    "M1_Requirements.pdf": "a58efa312e1d4a29afa20dc97b012de0fd4123653ddac05a07aa9013eceff809",
+    "M1_STRIDE.pdf": "fb088da5883e8bcf25863039c5b3dd2cb14cb2fde639a000ae1012fe7847a739",
+    "M1_TeamPlan.pdf": "2ebf73982969518231e0207a76f6b7d0fe809eb6b284e0ab415a96a869e77af8",
+    "M1_Topology_Trust.pdf": "326c8b16fad80d12a0418dd21314920bd230d14b51986c9972edb14760486ea1"
+  },
+  "visual_review": {
+    "status": "PASS",
+    "reviewer": "Document visual QA; member review not yet performed",
+    "utc": "2026-11-07T20:05:58.611954+00:00",
+    "pages_reviewed": 19,
+    "method": "All final PDF pages rendered and visually reviewed. Revised TeamPlan rendered at 120 dpi and both pages rechecked; other five PDFs retain their previously reviewed hashes. Tables, diagrams and Arabic names are readable.",
+    "scope": "Document appearance only; no runtime or teammate test claimed."
+  }
+}

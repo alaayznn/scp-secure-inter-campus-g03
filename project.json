@@ -1,0 +1,12 @@
+{
+  "group_id": "03",
+  "members": [
+    {"name": "الاء يزن احمد الزعبي", "student_id": "2350906014", "planned_role": "Primary implementation and integration"},
+    {"name": "بغداد ثامركساب بني خالد", "student_id": "2300906110", "planned_role": "Review and independent retesting"}
+  ],
+  "group_size_exception_approved": true,
+  "instructor_github": null,
+  "prepared_on": "2026-11-07",
+  "specification": "SCP_Final_Project_Specification_English_2026_v1.pdf",
+  "starter_kit_received": false
+}

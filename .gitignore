@@ -1,0 +1,30 @@
+# Secrets must never enter Git, including historical commits.
+.env
+.env.*
+!.env.example
+**/private/
+**/secrets/
+**/*.key
+**/*.key.*
+**/*.p12
+**/*.pfx
+**/*.jks
+**/*.keystore
+**/*keylog*
+**/*key-log*
+**/sslkeys*
+**/*psk*
+**/*passphrase*
+**/*password*
+**/*.pem
+!**/*.public.pem
+!**/*.cert.pem
+**/__pycache__/
+*.pyc
+.venv/
+node_modules/
+tmp/
+.local-backups/
+Thumbs.db
+.DS_Store
+# Capture files are NOT blanket-ignored: review real lab evidence before staging.
