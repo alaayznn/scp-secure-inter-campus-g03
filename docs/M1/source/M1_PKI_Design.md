@@ -26,7 +26,7 @@ Gateway EKU is a proposed purpose-specific restriction, not a substitute for exa
 | Issuing key / CA database backup | Key SECRET, database INTERNAL. Controlled signing workspace outside service mounts; encrypted backup, mode 600, offline between operations where feasible. |
 | Portal / gateway / staff private keys | SECRET. Per-role runtime secret mounts only in future stages, owner-read/write 600; never mounted wholesale across all six nodes. No secret creation in M1. |
 | Root/Issuing/leaf certificates and CRLs | PUBLIC. Reviewed public certificate/CRL files may enter Git; fingerprints independently checked before trust. |
-| Profiles, topology and configuration | INTERNAL. Private repository. Lab principal identifiers are test data. |
+| Profiles, topology and configuration | INTERNAL under the assignment's classification. Non-secret lab configuration is currently published at the team's explicit request; acceptance of the Public-repository exception is pending. Lab identifiers are test data. |
 | PCAPs, logs, TLS key logs | Baseline synthetic PCAP INTERNAL; review before commit. Key logs SECRET, never Git, delete after isolated exercise. No real credentials in traffic. |
 
 Windows bind-mount permissions do not establish Linux mode 600 by themselves. Future secret creation uses Linux-controlled storage with observed ownership/permissions; Windows ACLs and backup access also checked. Root exclusion is by physical storage placement, not .gitignore alone.

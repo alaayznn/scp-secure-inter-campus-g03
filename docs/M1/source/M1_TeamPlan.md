@@ -20,22 +20,22 @@ The user may perform most implementation. Teammate review/testing is credited on
 | State | Work |
 | Actual | All 11 assignment pages were reviewed, the empty SCP workspace and available tools checked, and group/membership details confirmed with the reported two-member approval. |
 | Actual preparation | Editable English M1 designs and baseline lab files are prepared. Document preparation is not proof of completed member review or runtime testing. Generated outputs/static results are listed in README and static review log. |
-| Actual environment setup | WSL and Docker Desktop installed; official Compose configuration validation passed. Windows restart is pending. No Docker engine, image build, running lab or PCAP has been verified. |
-| Planned, not performed | Teammate review, image build, six-node startup, route/isolation checks, HTTP baseline and real WAN capture. |
-| Planned, not approved | Acceptance of independently authored lab/ in place of instructor kit; private repository instructor access. |
+| Actual environment and baseline | WSL/Docker installed; image built; six healthy nodes and lab-only routing/isolation checked. Real WAN HTTP PCAP captured on gw-hq; frames 4/6 show request/readable response. Scripted execution requested by 2350906014; no independent member retest claimed. |
+| Planned, not performed | Baghdad's independent review/retest; any individual confirmation of the scripted evidence. |
+| Pending acceptance | Project-local lab/ replacement, original deadline handling, and Public repository instead of the required private visibility. No instructor approval is inferred. |
 | Future, excluded | PKI issuance, crypto tool, TLS deployment, VPN, KDC implementation and attacks belong to later milestones. |
 
 ## Schedule and dependencies
 Assignment dates: M1 06/11/2026; M2 20/11/2026; M3 11/12/2026; M4 25/12/2026. On preparation date 07/11/2026, M1's original deadline has passed. Confirm late-submission handling with instructor; no new date or waiver is assumed.
 
-Next sequence: manual Windows restart -> confirm Docker engine -> build image -> verify six nodes and isolation -> prove plaintext HTTP and capture -> record actual tester/results -> peer review -> secret/history scan -> instructor access verification -> annotated M1 tag. Runtime work is authorized; the restart remains manual. This is an order of work, not a promised timetable.
+Completed technical sequence: environment setup -> manual restart -> image build -> six-node/isolation checks -> HTTP and actual WAN capture -> recorded frames/results. Remaining sequence: member review/retest -> instructor clarification of listed exceptions -> final secret/history review -> annotated M1 tag only after all gates pass. This is an order of work, not a new deadline.
 
 ## Git, branches and releases
-Use one independent private SCP repository. Initial branch main; future short branches such as m1/docs and m1/baseline use small factual commits and real review. No fabricated history or teammate authorship. .gitignore precedes first commit; secrets never enter Git. Root storage stays outside repository/mounts.
+Assignment requires an independent private SCP repository. The team explicitly requested Public visibility because the instructor's account is unknown; public reading is verified, but approval of that exception is pending. Branch main holds M1; future short branches use factual commits and real review. No fabricated teammate authorship or review. Secrets never enter Git; Root storage stays outside repository/mounts.
 
 Before M1: review staged paths/content, scan the full reachable Git history and current files for secret markers/forbidden paths, inspect PCAP contents for real credentials, and verify all A1-A7 gates. Scan is heuristic, supplemented by manual review. An annotated timestamped tag named M1 is created and pushed only after every mandatory item including actual runtime/PCAP is complete. No placeholder M1 tag or release now.
 
-Connector account: alaayznn; actual remote/push status is in README. Check name uniqueness, privacy and accepted instructor access using the real username. Local-only submission needs instructor approval.
+Repository: https://github.com/alaayznn/scp-secure-inter-campus-g03 . It can be read without a GitHub account. Public reading solves access, not the assignment's private-repository requirement. The one-file M1_Submission.pdf includes the repository link and six required documents; it does not replace the still-pending release tag or instructor acceptance of exceptions.
 
 ## Handover checklist
 Each member should explain: why two CAs and offline Root; why at least three staff certificates for two people; what SAN/KU/EKU constrain; why VPN plus TLS; why the M1 HTTP capture must be readable; why gateway peer identity is pinned; why nonce/timestamp alone is insufficient without replay state; how fresh CRLs and failure policy work; what was actually tested and what is still planned. A review entry needs real name/ID, date, scope, findings and disposition. None is claimed here.

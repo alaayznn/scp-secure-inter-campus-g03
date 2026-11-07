@@ -1,0 +1,1355 @@
+{
+  "utc_start": "2026-11-07T20:45:25.882213+00:00",
+  "requested_by": "2350906014",
+  "execution": "Project scripted runner; independent member review/retest is not claimed",
+  "group_id": "03",
+  "capture_requested": false,
+  "checks": [
+    {
+      "id": "M1-GROUP",
+      "expected": "Confirmed group and project",
+      "actual": "scp-g03-m1",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-SIX",
+      "expected": "Exactly six current project containers",
+      "actual": 6,
+      "result": "PASS"
+    },
+    {
+      "id": "M1-HEALTH",
+      "expected": "All six required roles running/healthy",
+      "actual": {
+        "attacker": "healthy",
+        "client-br": "healthy",
+        "gw-branch": "healthy",
+        "gw-hq": "healthy",
+        "kdc": "healthy",
+        "web-hq": "healthy"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EXPOSURE",
+      "expected": "No privileged/host networking or published ports",
+      "actual": "Inspected all six HostConfig records",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-IP/attacker",
+      "expected": {
+        "wan": "172.16.3.66"
+      },
+      "actual": {
+        "wan": "172.16.3.66"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-MOUNT/attacker",
+      "expected": "/work read-only, no Docker socket",
+      "actual": {
+        "work_rw": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-DEFAULT/attacker",
+      "expected": "No external default route",
+      "actual": "10.3.2.0/24 via 172.16.3.20 dev eth0 \n172.16.3.0/24 dev eth0 proto kernel scope link src 172.16.3.66 \n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-ROUTE/attacker",
+      "expected": "Documentation-only external destination has no route (no packet sent)",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-FILTER/attacker",
+      "expected": "Default-drop output plus embedded DNS block",
+      "actual": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-IP/client-br",
+      "expected": {
+        "branch": "10.3.2.10"
+      },
+      "actual": {
+        "branch": "10.3.2.10"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-MOUNT/client-br",
+      "expected": "/work read-only, no Docker socket",
+      "actual": {
+        "work_rw": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-DEFAULT/client-br",
+      "expected": "No external default route",
+      "actual": "10.3.1.0/24 via 10.3.2.1 dev eth0 \n10.3.2.0/24 dev eth0 proto kernel scope link src 10.3.2.10 \n172.16.3.0/24 via 10.3.2.1 dev eth0 \n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-ROUTE/client-br",
+      "expected": "Documentation-only external destination has no route (no packet sent)",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-FILTER/client-br",
+      "expected": "Default-drop output plus embedded DNS block",
+      "actual": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-IP/gw-branch",
+      "expected": {
+        "wan": "172.16.3.20",
+        "branch": "10.3.2.1"
+      },
+      "actual": {
+        "branch": "10.3.2.1",
+        "wan": "172.16.3.20"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-MOUNT/gw-branch",
+      "expected": "/work read-only, no Docker socket",
+      "actual": {
+        "work_rw": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-DEFAULT/gw-branch",
+      "expected": "No external default route",
+      "actual": "10.3.1.0/24 via 172.16.3.10 dev eth1 \n10.3.2.0/24 dev eth0 proto kernel scope link src 10.3.2.1 \n172.16.3.0/24 dev eth1 proto kernel scope link src 172.16.3.20 \n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-ROUTE/gw-branch",
+      "expected": "Documentation-only external destination has no route (no packet sent)",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-FILTER/gw-branch",
+      "expected": "Default-drop output plus embedded DNS block",
+      "actual": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth0 -o eth1 -p tcp -m tcp --dport 80 -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth1 -o eth0 -p tcp -m tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth0 -o eth1 -p icmp -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth1 -o eth0 -p icmp -j ACCEPT\n-A FORWARD -s 172.16.3.66/32 -d 10.3.2.0/24 -i eth1 -o eth0 -j ACCEPT\n-A FORWARD -s 10.3.2.0/24 -d 172.16.3.66/32 -i eth0 -o eth1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-IP/gw-hq",
+      "expected": {
+        "wan": "172.16.3.10",
+        "hq": "10.3.1.1"
+      },
+      "actual": {
+        "hq": "10.3.1.1",
+        "wan": "172.16.3.10"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-MOUNT/gw-hq",
+      "expected": "/work read-only, no Docker socket",
+      "actual": {
+        "work_rw": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-DEFAULT/gw-hq",
+      "expected": "No external default route",
+      "actual": "10.3.1.0/24 dev eth0 proto kernel scope link src 10.3.1.1 \n10.3.2.0/24 via 172.16.3.20 dev eth1 \n172.16.3.0/24 dev eth1 proto kernel scope link src 172.16.3.10 \n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-ROUTE/gw-hq",
+      "expected": "Documentation-only external destination has no route (no packet sent)",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-FILTER/gw-hq",
+      "expected": "Default-drop output plus embedded DNS block",
+      "actual": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth1 -o eth0 -p tcp -m tcp --dport 80 -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth0 -o eth1 -p tcp -m tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth1 -o eth0 -p icmp -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth0 -o eth1 -p icmp -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-IP/kdc",
+      "expected": {
+        "hq": "10.3.1.20"
+      },
+      "actual": {
+        "hq": "10.3.1.20"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-MOUNT/kdc",
+      "expected": "/work read-only, no Docker socket",
+      "actual": {
+        "work_rw": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-DEFAULT/kdc",
+      "expected": "No external default route",
+      "actual": "10.3.1.0/24 dev eth0 proto kernel scope link src 10.3.1.20 \n10.3.2.0/24 via 10.3.1.1 dev eth0 \n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-ROUTE/kdc",
+      "expected": "Documentation-only external destination has no route (no packet sent)",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-FILTER/kdc",
+      "expected": "Default-drop output plus embedded DNS block",
+      "actual": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-IP/web-hq",
+      "expected": {
+        "hq": "10.3.1.10"
+      },
+      "actual": {
+        "hq": "10.3.1.10"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-MOUNT/web-hq",
+      "expected": "/work read-only, no Docker socket",
+      "actual": {
+        "work_rw": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-DEFAULT/web-hq",
+      "expected": "No external default route",
+      "actual": "10.3.1.0/24 dev eth0 proto kernel scope link src 10.3.1.10 \n10.3.2.0/24 via 10.3.1.1 dev eth0 \n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-ROUTE/web-hq",
+      "expected": "Documentation-only external destination has no route (no packet sent)",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-EGRESS-FILTER/web-hq",
+      "expected": "Default-drop output plus embedded DNS block",
+      "actual": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NETWORKS",
+      "expected": "Three internal/isolated networks, masquerading disabled",
+      "actual": {
+        "scp-g03-m1_branch": {
+          "internal": true,
+          "options": {
+            "com.docker.network.bridge.enable_ip_masquerade": "false",
+            "com.docker.network.bridge.gateway_mode_ipv4": "isolated",
+            "com.docker.network.enable_ipv4": "true"
+          }
+        },
+        "scp-g03-m1_hq": {
+          "internal": true,
+          "options": {
+            "com.docker.network.bridge.enable_ip_masquerade": "false",
+            "com.docker.network.bridge.gateway_mode_ipv4": "isolated",
+            "com.docker.network.enable_ipv4": "true"
+          }
+        },
+        "scp-g03-m1_wan": {
+          "internal": true,
+          "options": {
+            "com.docker.network.bridge.enable_ip_masquerade": "false",
+            "com.docker.network.bridge.gateway_mode_ipv4": "isolated",
+            "com.docker.network.enable_ipv4": "true"
+          }
+        }
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-HOST-L2-SCOPE",
+      "expected": "Nine accepts restricted to the same project bridge and permitted lab address pairs",
+      "actual": "-N SCP_G03_L2\n-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -m comment --comment scp-g03-m1-l2-transit -j RETURN\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-VPN/gw-hq",
+      "expected": "No XFRM policy or charon process",
+      "actual": {
+        "policy": "",
+        "charon_exit": 1
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-NO-VPN/gw-branch",
+      "expected": "No XFRM policy or charon process",
+      "actual": {
+        "policy": "",
+        "charon_exit": 1
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-ATTACKER-HQ",
+      "expected": "Attacker has no HQ route",
+      "actual": "RTNETLINK answers: Network is unreachable",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-HTTP",
+      "expected": "HTTP success with exact synthetic marker",
+      "actual": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0@if35: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0\n    inet 10.3.2.10/24 brd 10.3.2.255 scope global eth0\n       valid_lft forever preferred_lft forever\n10.3.1.0/24 via 10.3.2.1 dev eth0 \n10.3.2.0/24 dev eth0 proto kernel scope link src 10.3.2.10 \n172.16.3.0/24 via 10.3.2.1 dev eth0 \nPING 10.3.1.10 (10.3.1.10) 56(84) bytes of data.\n64 bytes from 10.3.1.10: icmp_seq=1 ttl=62 time=0.914 ms\n64 bytes from 10.3.1.10: icmp_seq=2 ttl=62 time=0.166 ms\n\n--- 10.3.1.10 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1026ms\nrtt min/avg/max/mdev = 0.166/0.540/0.914/0.374 ms\nSCP-M1-G03-HTTP-CLEAR\nHTTP client result OK; this alone does not prove WAN capture or isolation.\n",
+      "result": "PASS"
+    },
+    {
+      "id": "M1-PCAP",
+      "expected": "Real nonempty PCAP contains known readable HTTP response",
+      "actual": {
+        "exists": true,
+        "bytes": 1221
+      },
+      "result": "PASS"
+    },
+    {
+      "id": "M1-HTTP-FRAMES",
+      "expected": "Actual decoded GET and HTTP 200 frame numbers",
+      "actual": [
+        [
+          "4",
+          "1794083848.629740000",
+          "10.3.2.10",
+          "10.3.1.10",
+          "0",
+          "GET",
+          "/baseline.txt",
+          ""
+        ],
+        [
+          "6",
+          "1794083848.629918000",
+          "10.3.1.10",
+          "10.3.2.10",
+          "0",
+          "",
+          "",
+          "200"
+        ]
+      ],
+      "result": "PASS"
+    },
+    {
+      "id": "M1-BODY-FRAMES",
+      "expected": "Known marker visible in packet payload",
+      "actual": [
+        "6"
+      ],
+      "result": "PASS"
+    },
+    {
+      "id": "M1-PLAINTEXT",
+      "expected": "Known marker readable in reassembled WAN TCP stream",
+      "actual": "\n===================================================================\nFollow: tcp,ascii\nFilter: tcp.stream eq 0\nNode 0: 10.3.2.10:42840\nNode 1: 10.3.1.10:80\n93\nGET /baseline.txt HTTP/1.1\nHost: portal.g03.scp.lab\nUser-Agent: curl/8.5.0\nAccept: */*\n\n\n\t268\nHTTP/1.1 200 OK\nServer: nginx/1.24.0 (Ubuntu)\nDate: Sat, 07 Nov 2026 20:37:28 GMT\nContent-Type: text/plain\nContent-Length: 22\nLast-Modified: Sat, 07 Nov 2026 20:30:14 GMT\nConnection: keep-alive\nETag: \"6aef8a56-16\"\nAccept-Ranges: bytes\n\nSCP-M1-G03-HTTP-CLEAR\n\n===================================================================\n",
+      "result": "PASS"
+    }
+  ],
+  "commands": [
+    {
+      "utc": "2026-11-07T20:45:26.397081+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "config",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"scp-g03-m1\",\n  \"networks\": {\n    \"branch\": {\n      \"name\": \"scp-g03-m1_branch\",\n      \"driver\": \"bridge\",\n      \"driver_opts\": {\n        \"com.docker.network.bridge.enable_ip_masquerade\": \"false\",\n        \"com.docker.network.bridge.gateway_mode_ipv4\": \"isolated\"\n      },\n      \"ipam\": {\n        \"config\": [\n          {\n            \"subnet\": \"10.3.2.0/24\",\n            \"gateway\": \"10.3.2.254\"\n          }\n        ]\n      },\n      \"internal\": true,\n      \"enable_ipv6\": false\n    },\n    \"hq\": {\n      \"name\": \"scp-g03-m1_hq\",\n      \"driver\": \"bridge\",\n      \"driver_opts\": {\n        \"com.docker.network.bridge.enable_ip_masquerade\": \"false\",\n        \"com.docker.network.bridge.gateway_mode_ipv4\": \"isolated\"\n      },\n      \"ipam\": {\n        \"config\": [\n          {\n            \"subnet\": \"10.3.1.0/24\",\n            \"gateway\": \"10.3.1.254\"\n          }\n        ]\n      },\n      \"internal\": true,\n      \"enable_ipv6\": false\n    },\n    \"wan\": {\n      \"name\": \"scp-g03-m1_wan\",\n      \"driver\": \"bridge\",\n      \"driver_opts\": {\n        \"com.docker.network.bridge.enable_ip_masquerade\": \"false\",\n        \"com.docker.network.bridge.gateway_mode_ipv4\": \"isolated\"\n      },\n      \"ipam\": {\n        \"config\": [\n          {\n            \"subnet\": \"172.16.3.0/24\",\n            \"gateway\": \"172.16.3.254\"\n          }\n        ]\n      },\n      \"internal\": true,\n      \"enable_ipv6\": false\n    }\n  },\n  \"services\": {\n    \"attacker\": {\n      \"restart\": \"no\",\n      \"cap_add\": [\n        \"NET_ADMIN\",\n        \"NET_RAW\",\n        \"SETUID\",\n        \"SETGID\",\n        \"CHOWN\",\n        \"DAC_OVERRIDE\",\n        \"KILL\"\n      ],\n      \"cap_drop\": [\n        \"ALL\"\n      ],\n      \"command\": null,\n      \"entrypoint\": null,\n      \"environment\": {\n        \"GROUP_ID\": \"03\",\n        \"GROUP_NUM\": \"3\",\n        \"LAB_MODE\": \"baseline\",\n        \"ROLE\": \"attacker\"\n      },\n      \"extra_hosts\": [\n        \"attacker.g03.scp.lab=172.16.3.66\",\n        \"attacker=172.16.3.66\",\n        \"client-br.g03.scp.lab=10.3.2.10\",\n        \"client-br=10.3.2.10\",\n        \"gw-branch.g03.scp.lab=172.16.3.20\",\n        \"gw-branch=172.16.3.20\",\n        \"gw-hq.g03.scp.lab=172.16.3.10\",\n        \"gw-hq=172.16.3.10\",\n        \"kdc.g03.scp.lab=10.3.1.20\",\n        \"kdc=10.3.1.20\",\n        \"pki.g03.scp.lab=10.3.1.10\",\n        \"portal.g03.scp.lab=10.3.1.10\",\n        \"web-hq.g03.scp.lab=10.3.1.10\",\n        \"web-hq=10.3.1.10\"\n      ],\n      \"hostname\": \"attacker\",\n      \"image\": \"scp-g03-lab:ubuntu24.04-m1\",\n      \"init\": true,\n      \"networks\": {\n        \"wan\": {\n          \"ipv4_address\": \"172.16.3.66\"\n        }\n      },\n      \"security_opt\": [\n        \"no-new-privileges:true\"\n      ],\n      \"sysctls\": {\n        \"net.ipv4.conf.all.rp_filter\": \"0\",\n        \"net.ipv4.conf.default.rp_filter\": \"0\",\n        \"net.ipv4.ip_forward\": \"0\",\n        \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n      },\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\",\n          \"target\": \"/work\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n          \"target\": \"/opt/scp/roles\",\n          \"read_only\": true,\n          \"bind\": {}\n        }\n      ],\n      \"build\": {\n        \"context\": \"D:\\\\SCP project\\\\lab\\\\docker\",\n        \"dockerfile\": \"Dockerfile\"\n      },\n      \"healthcheck\": {\n        \"test\": [\n          \"CMD\",\n          \"bash\",\n          \"/opt/scp/roles/healthcheck.sh\"\n        ],\n        \"timeout\": \"3s\",\n        \"interval\": \"10s\",\n        \"retries\": 6\n      }\n    },\n    \"client-br\": {\n      \"restart\": \"no\",\n      \"cap_add\": [\n        \"NET_ADMIN\",\n        \"NET_RAW\",\n        \"SETUID\",\n        \"SETGID\",\n        \"CHOWN\",\n        \"DAC_OVERRIDE\",\n        \"KILL\"\n      ],\n      \"cap_drop\": [\n        \"ALL\"\n      ],\n      \"command\": null,\n      \"entrypoint\": null,\n      \"environment\": {\n        \"GROUP_ID\": \"03\",\n        \"GROUP_NUM\": \"3\",\n        \"LAB_MODE\": \"baseline\",\n        \"ROLE\": \"client-br\"\n      },\n      \"extra_hosts\": [\n        \"attacker.g03.scp.lab=172.16.3.66\",\n        \"attacker=172.16.3.66\",\n        \"client-br.g03.scp.lab=10.3.2.10\",\n        \"client-br=10.3.2.10\",\n        \"gw-branch.g03.scp.lab=172.16.3.20\",\n        \"gw-branch=172.16.3.20\",\n        \"gw-hq.g03.scp.lab=172.16.3.10\",\n        \"gw-hq=172.16.3.10\",\n        \"kdc.g03.scp.lab=10.3.1.20\",\n        \"kdc=10.3.1.20\",\n        \"pki.g03.scp.lab=10.3.1.10\",\n        \"portal.g03.scp.lab=10.3.1.10\",\n        \"web-hq.g03.scp.lab=10.3.1.10\",\n        \"web-hq=10.3.1.10\"\n      ],\n      \"hostname\": \"client-br\",\n      \"image\": \"scp-g03-lab:ubuntu24.04-m1\",\n      \"init\": true,\n      \"networks\": {\n        \"branch\": {\n          \"ipv4_address\": \"10.3.2.10\"\n        }\n      },\n      \"security_opt\": [\n        \"no-new-privileges:true\"\n      ],\n      \"sysctls\": {\n        \"net.ipv4.conf.all.rp_filter\": \"0\",\n        \"net.ipv4.conf.default.rp_filter\": \"0\",\n        \"net.ipv4.ip_forward\": \"0\",\n        \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n      },\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\",\n          \"target\": \"/work\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n          \"target\": \"/opt/scp/roles\",\n          \"read_only\": true,\n          \"bind\": {}\n        }\n      ],\n      \"build\": {\n        \"context\": \"D:\\\\SCP project\\\\lab\\\\docker\",\n        \"dockerfile\": \"Dockerfile\"\n      },\n      \"healthcheck\": {\n        \"test\": [\n          \"CMD\",\n          \"bash\",\n          \"/opt/scp/roles/healthcheck.sh\"\n        ],\n        \"timeout\": \"3s\",\n        \"interval\": \"10s\",\n        \"retries\": 6\n      }\n    },\n    \"gw-branch\": {\n      \"restart\": \"no\",\n      \"cap_add\": [\n        \"NET_ADMIN\",\n        \"NET_RAW\",\n        \"SETUID\",\n        \"SETGID\",\n        \"CHOWN\",\n        \"DAC_OVERRIDE\",\n        \"KILL\"\n      ],\n      \"cap_drop\": [\n        \"ALL\"\n      ],\n      \"command\": null,\n      \"entrypoint\": null,\n      \"environment\": {\n        \"GROUP_ID\": \"03\",\n        \"GROUP_NUM\": \"3\",\n        \"LAB_MODE\": \"baseline\",\n        \"ROLE\": \"gw-branch\"\n      },\n      \"extra_hosts\": [\n        \"attacker.g03.scp.lab=172.16.3.66\",\n        \"attacker=172.16.3.66\",\n        \"client-br.g03.scp.lab=10.3.2.10\",\n        \"client-br=10.3.2.10\",\n        \"gw-branch.g03.scp.lab=172.16.3.20\",\n        \"gw-branch=172.16.3.20\",\n        \"gw-hq.g03.scp.lab=172.16.3.10\",\n        \"gw-hq=172.16.3.10\",\n        \"kdc.g03.scp.lab=10.3.1.20\",\n        \"kdc=10.3.1.20\",\n        \"pki.g03.scp.lab=10.3.1.10\",\n        \"portal.g03.scp.lab=10.3.1.10\",\n        \"web-hq.g03.scp.lab=10.3.1.10\",\n        \"web-hq=10.3.1.10\"\n      ],\n      \"hostname\": \"gw-branch\",\n      \"image\": \"scp-g03-lab:ubuntu24.04-m1\",\n      \"init\": true,\n      \"networks\": {\n        \"branch\": {\n          \"ipv4_address\": \"10.3.2.1\"\n        },\n        \"wan\": {\n          \"ipv4_address\": \"172.16.3.20\"\n        }\n      },\n      \"security_opt\": [\n        \"no-new-privileges:true\"\n      ],\n      \"sysctls\": {\n        \"net.ipv4.conf.all.rp_filter\": \"0\",\n        \"net.ipv4.conf.default.rp_filter\": \"0\",\n        \"net.ipv4.ip_forward\": \"1\",\n        \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n      },\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\",\n          \"target\": \"/work\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n          \"target\": \"/opt/scp/roles\",\n          \"read_only\": true,\n          \"bind\": {}\n        }\n      ],\n      \"build\": {\n        \"context\": \"D:\\\\SCP project\\\\lab\\\\docker\",\n        \"dockerfile\": \"Dockerfile\"\n      },\n      \"healthcheck\": {\n        \"test\": [\n          \"CMD\",\n          \"bash\",\n          \"/opt/scp/roles/healthcheck.sh\"\n        ],\n        \"timeout\": \"3s\",\n        \"interval\": \"10s\",\n        \"retries\": 6\n      }\n    },\n    \"gw-hq\": {\n      \"restart\": \"no\",\n      \"cap_add\": [\n        \"NET_ADMIN\",\n        \"NET_RAW\",\n        \"SETUID\",\n        \"SETGID\",\n        \"CHOWN\",\n        \"DAC_OVERRIDE\",\n        \"KILL\"\n      ],\n      \"cap_drop\": [\n        \"ALL\"\n      ],\n      \"command\": null,\n      \"entrypoint\": null,\n      \"environment\": {\n        \"GROUP_ID\": \"03\",\n        \"GROUP_NUM\": \"3\",\n        \"LAB_MODE\": \"baseline\",\n        \"ROLE\": \"gw-hq\"\n      },\n      \"extra_hosts\": [\n        \"attacker.g03.scp.lab=172.16.3.66\",\n        \"attacker=172.16.3.66\",\n        \"client-br.g03.scp.lab=10.3.2.10\",\n        \"client-br=10.3.2.10\",\n        \"gw-branch.g03.scp.lab=172.16.3.20\",\n        \"gw-branch=172.16.3.20\",\n        \"gw-hq.g03.scp.lab=172.16.3.10\",\n        \"gw-hq=172.16.3.10\",\n        \"kdc.g03.scp.lab=10.3.1.20\",\n        \"kdc=10.3.1.20\",\n        \"pki.g03.scp.lab=10.3.1.10\",\n        \"portal.g03.scp.lab=10.3.1.10\",\n        \"web-hq.g03.scp.lab=10.3.1.10\",\n        \"web-hq=10.3.1.10\"\n      ],\n      \"hostname\": \"gw-hq\",\n      \"image\": \"scp-g03-lab:ubuntu24.04-m1\",\n      \"init\": true,\n      \"networks\": {\n        \"hq\": {\n          \"ipv4_address\": \"10.3.1.1\"\n        },\n        \"wan\": {\n          \"ipv4_address\": \"172.16.3.10\"\n        }\n      },\n      \"security_opt\": [\n        \"no-new-privileges:true\"\n      ],\n      \"sysctls\": {\n        \"net.ipv4.conf.all.rp_filter\": \"0\",\n        \"net.ipv4.conf.default.rp_filter\": \"0\",\n        \"net.ipv4.ip_forward\": \"1\",\n        \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n      },\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\",\n          \"target\": \"/work\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n          \"target\": \"/opt/scp/roles\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\evidence\",\n          \"target\": \"/evidence\",\n          \"bind\": {}\n        }\n      ],\n      \"build\": {\n        \"context\": \"D:\\\\SCP project\\\\lab\\\\docker\",\n        \"dockerfile\": \"Dockerfile\"\n      },\n      \"healthcheck\": {\n        \"test\": [\n          \"CMD\",\n          \"bash\",\n          \"/opt/scp/roles/healthcheck.sh\"\n        ],\n        \"timeout\": \"3s\",\n        \"interval\": \"10s\",\n        \"retries\": 6\n      }\n    },\n    \"kdc\": {\n      \"restart\": \"no\",\n      \"cap_add\": [\n        \"NET_ADMIN\",\n        \"NET_RAW\",\n        \"SETUID\",\n        \"SETGID\",\n        \"CHOWN\",\n        \"DAC_OVERRIDE\",\n        \"KILL\"\n      ],\n      \"cap_drop\": [\n        \"ALL\"\n      ],\n      \"command\": null,\n      \"entrypoint\": null,\n      \"environment\": {\n        \"GROUP_ID\": \"03\",\n        \"GROUP_NUM\": \"3\",\n        \"LAB_MODE\": \"baseline\",\n        \"ROLE\": \"kdc\"\n      },\n      \"extra_hosts\": [\n        \"attacker.g03.scp.lab=172.16.3.66\",\n        \"attacker=172.16.3.66\",\n        \"client-br.g03.scp.lab=10.3.2.10\",\n        \"client-br=10.3.2.10\",\n        \"gw-branch.g03.scp.lab=172.16.3.20\",\n        \"gw-branch=172.16.3.20\",\n        \"gw-hq.g03.scp.lab=172.16.3.10\",\n        \"gw-hq=172.16.3.10\",\n        \"kdc.g03.scp.lab=10.3.1.20\",\n        \"kdc=10.3.1.20\",\n        \"pki.g03.scp.lab=10.3.1.10\",\n        \"portal.g03.scp.lab=10.3.1.10\",\n        \"web-hq.g03.scp.lab=10.3.1.10\",\n        \"web-hq=10.3.1.10\"\n      ],\n      \"hostname\": \"kdc\",\n      \"image\": \"scp-g03-lab:ubuntu24.04-m1\",\n      \"init\": true,\n      \"networks\": {\n        \"hq\": {\n          \"ipv4_address\": \"10.3.1.20\"\n        }\n      },\n      \"security_opt\": [\n        \"no-new-privileges:true\"\n      ],\n      \"sysctls\": {\n        \"net.ipv4.conf.all.rp_filter\": \"0\",\n        \"net.ipv4.conf.default.rp_filter\": \"0\",\n        \"net.ipv4.ip_forward\": \"0\",\n        \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n      },\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\",\n          \"target\": \"/work\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n          \"target\": \"/opt/scp/roles\",\n          \"read_only\": true,\n          \"bind\": {}\n        }\n      ],\n      \"build\": {\n        \"context\": \"D:\\\\SCP project\\\\lab\\\\docker\",\n        \"dockerfile\": \"Dockerfile\"\n      },\n      \"healthcheck\": {\n        \"test\": [\n          \"CMD\",\n          \"bash\",\n          \"/opt/scp/roles/healthcheck.sh\"\n        ],\n        \"timeout\": \"3s\",\n        \"interval\": \"10s\",\n        \"retries\": 6\n      }\n    },\n    \"web-hq\": {\n      \"restart\": \"no\",\n      \"cap_add\": [\n        \"NET_ADMIN\",\n        \"NET_RAW\",\n        \"SETUID\",\n        \"SETGID\",\n        \"CHOWN\",\n        \"DAC_OVERRIDE\",\n        \"KILL\",\n        \"NET_BIND_SERVICE\"\n      ],\n      \"cap_drop\": [\n        \"ALL\"\n      ],\n      \"command\": null,\n      \"entrypoint\": null,\n      \"environment\": {\n        \"GROUP_ID\": \"03\",\n        \"GROUP_NUM\": \"3\",\n        \"LAB_MODE\": \"baseline\",\n        \"ROLE\": \"web-hq\"\n      },\n      \"extra_hosts\": [\n        \"attacker.g03.scp.lab=172.16.3.66\",\n        \"attacker=172.16.3.66\",\n        \"client-br.g03.scp.lab=10.3.2.10\",\n        \"client-br=10.3.2.10\",\n        \"gw-branch.g03.scp.lab=172.16.3.20\",\n        \"gw-branch=172.16.3.20\",\n        \"gw-hq.g03.scp.lab=172.16.3.10\",\n        \"gw-hq=172.16.3.10\",\n        \"kdc.g03.scp.lab=10.3.1.20\",\n        \"kdc=10.3.1.20\",\n        \"pki.g03.scp.lab=10.3.1.10\",\n        \"portal.g03.scp.lab=10.3.1.10\",\n        \"web-hq.g03.scp.lab=10.3.1.10\",\n        \"web-hq=10.3.1.10\"\n      ],\n      \"hostname\": \"web-hq\",\n      \"image\": \"scp-g03-lab:ubuntu24.04-m1\",\n      \"init\": true,\n      \"networks\": {\n        \"hq\": {\n          \"ipv4_address\": \"10.3.1.10\"\n        }\n      },\n      \"security_opt\": [\n        \"no-new-privileges:true\"\n      ],\n      \"sysctls\": {\n        \"net.ipv4.conf.all.rp_filter\": \"0\",\n        \"net.ipv4.conf.default.rp_filter\": \"0\",\n        \"net.ipv4.ip_forward\": \"0\",\n        \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n      },\n      \"volumes\": [\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\",\n          \"target\": \"/work\",\n          \"read_only\": true,\n          \"bind\": {}\n        },\n        {\n          \"type\": \"bind\",\n          \"source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n          \"target\": \"/opt/scp/roles\",\n          \"read_only\": true,\n          \"bind\": {}\n        }\n      ],\n      \"build\": {\n        \"context\": \"D:\\\\SCP project\\\\lab\\\\docker\",\n        \"dockerfile\": \"Dockerfile\"\n      },\n      \"healthcheck\": {\n        \"test\": [\n          \"CMD\",\n          \"bash\",\n          \"/opt/scp/roles/healthcheck.sh\"\n        ],\n        \"timeout\": \"3s\",\n        \"interval\": \"10s\",\n        \"retries\": 6\n      }\n    }\n  }\n}",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:26.922886+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "ps",
+        "-q"
+      ],
+      "exit_code": 0,
+      "stdout": "bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d\n96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b\n2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71\ne8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455\n3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b\n25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:27.136097+00:00",
+      "argv": [
+        "docker",
+        "inspect",
+        "bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d",
+        "96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b",
+        "2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71",
+        "e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455",
+        "3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b",
+        "25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc"
+      ],
+      "exit_code": 0,
+      "stdout": "[\n    {\n        \"Id\": \"bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d\",\n        \"Created\": \"2026-11-07T20:30:12.205907039Z\",\n        \"Path\": \"bash\",\n        \"Args\": [\n            \"/opt/scp/roles/baseline-entrypoint.sh\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 10429,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-11-07T20:30:13.491723854Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\",\n            \"Health\": {\n                \"Status\": \"healthy\",\n                \"FailingStreak\": 0,\n                \"Log\": [\n                    {\n                        \"Start\": \"2026-11-07T20:44:39.031614232Z\",\n                        \"End\": \"2026-11-07T20:44:39.08697355Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:49.08847369Z\",\n                        \"End\": \"2026-11-07T20:44:49.150888916Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:59.152059543Z\",\n                        \"End\": \"2026-11-07T20:44:59.213892765Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:09.212567468Z\",\n                        \"End\": \"2026-11-07T20:45:09.261497495Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:19.2623521Z\",\n                        \"End\": \"2026-11-07T20:45:19.317208071Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    }\n                ]\n            }\n        },\n        \"Image\": \"sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/scp-g03-m1-attacker-1\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": [\n                \"D:\\\\SCP project:/work:ro\",\n                \"D:\\\\SCP project\\\\lab\\\\roles:/opt/scp/roles:ro\"\n            ],\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"scp-g03-m1_wan\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": [\n                \"CAP_CHOWN\",\n                \"CAP_DAC_OVERRIDE\",\n                \"CAP_KILL\",\n                \"CAP_NET_ADMIN\",\n                \"CAP_NET_RAW\",\n                \"CAP_SETGID\",\n                \"CAP_SETUID\"\n            ],\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": null,\n            \"DnsSearch\": null,\n            \"ExtraHosts\": [\n                \"attacker:172.16.3.66\",\n                \"gw-hq.g03.scp.lab:172.16.3.10\",\n                \"web-hq.g03.scp.lab:10.3.1.10\",\n                \"pki.g03.scp.lab:10.3.1.10\",\n                \"kdc.g03.scp.lab:10.3.1.20\",\n                \"client-br:10.3.2.10\",\n                \"client-br.g03.scp.lab:10.3.2.10\",\n                \"gw-hq:172.16.3.10\",\n                \"portal.g03.scp.lab:10.3.1.10\",\n                \"web-hq:10.3.1.10\",\n                \"kdc:10.3.1.20\",\n                \"attacker.g03.scp.lab:172.16.3.66\",\n                \"gw-branch:172.16.3.20\",\n                \"gw-branch.g03.scp.lab:172.16.3.20\"\n            ],\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": false,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Sysctls\": {\n                \"net.ipv4.conf.all.rp_filter\": \"0\",\n                \"net.ipv4.conf.default.rp_filter\": \"0\",\n                \"net.ipv4.ip_forward\": \"0\",\n                \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n            },\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": null,\n            \"BlkioDeviceReadBps\": null,\n            \"BlkioDeviceWriteBps\": null,\n            \"BlkioDeviceReadIOps\": null,\n            \"BlkioDeviceWriteIOps\": null,\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": null,\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": null,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ],\n            \"Init\": true\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\",\n                \"Destination\": \"/work\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n                \"Destination\": \"/opt/scp/roles\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"attacker\",\n            \"Domainname\": \"\",\n            \"User\": \"\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": true,\n            \"AttachStderr\": true,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"ROLE=attacker\",\n                \"GROUP_ID=03\",\n                \"GROUP_NUM=3\",\n                \"LAB_MODE=baseline\",\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Cmd\": null,\n            \"Healthcheck\": {\n                \"Test\": [\n                    \"CMD\",\n                    \"bash\",\n                    \"/opt/scp/roles/healthcheck.sh\"\n                ],\n                \"Interval\": 10000000000,\n                \"Timeout\": 3000000000,\n                \"Retries\": 6\n            },\n            \"Image\": \"scp-g03-lab:ubuntu24.04-m1\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/work\",\n            \"Entrypoint\": [\n                \"bash\",\n                \"/opt/scp/roles/baseline-entrypoint.sh\"\n            ],\n            \"Labels\": {\n                \"com.docker.compose.config-hash\": \"382817dfd30ad2c2ad0afc6a562547809ecfbd02658cac75454f90b6632e6d64\",\n                \"com.docker.compose.container-number\": \"1\",\n                \"com.docker.compose.depends_on\": \"\",\n                \"com.docker.compose.image\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n                \"com.docker.compose.oneoff\": \"False\",\n                \"com.docker.compose.project\": \"scp-g03-m1\",\n                \"com.docker.compose.project.config_files\": \"D:\\\\SCP project\\\\lab\\\\docker-compose.yml\",\n                \"com.docker.compose.project.working_dir\": \"D:\\\\SCP project\\\\lab\",\n                \"com.docker.compose.service\": \"attacker\",\n                \"com.docker.compose.version\": \"5.6.1\",\n                \"org.opencontainers.image.version\": \"24.04\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"5d835718eac643a22c44c83eedcad45a2015c2146f4f6e8658af0091ad1a8b96\",\n            \"SandboxKey\": \"/var/run/docker/netns/5d835718eac6\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"scp-g03-m1_wan\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"172.16.3.66\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-attacker-1\",\n                        \"attacker\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"1dd592f648aeb8d006aa7385ec920dedad4570b61cab29f4a62a63f72ce0f053\",\n                    \"EndpointID\": \"d1e29eadde76b2e1a32da57869cb0b03f8d13d887f537d2f10742305182fd8aa\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"172.16.3.66\",\n                    \"MacAddress\": \"f2:47:2f:89:8d:09\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-attacker-1\",\n                        \"attacker\",\n                        \"bc61c1271a76\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n            \"size\": 1055,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    },\n    {\n        \"Id\": \"96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b\",\n        \"Created\": \"2026-11-07T20:30:12.237155459Z\",\n        \"Path\": \"bash\",\n        \"Args\": [\n            \"/opt/scp/roles/baseline-entrypoint.sh\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 10277,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-11-07T20:30:12.738470092Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\",\n            \"Health\": {\n                \"Status\": \"healthy\",\n                \"FailingStreak\": 0,\n                \"Log\": [\n                    {\n                        \"Start\": \"2026-11-07T20:44:38.477718322Z\",\n                        \"End\": \"2026-11-07T20:44:38.53424214Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:48.535665414Z\",\n                        \"End\": \"2026-11-07T20:44:48.590295376Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:58.591020162Z\",\n                        \"End\": \"2026-11-07T20:44:58.645610772Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:08.643944781Z\",\n                        \"End\": \"2026-11-07T20:45:08.700754076Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:18.701432444Z\",\n                        \"End\": \"2026-11-07T20:45:18.760552177Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    }\n                ]\n            }\n        },\n        \"Image\": \"sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/scp-g03-m1-client-br-1\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": [\n                \"D:\\\\SCP project:/work:ro\",\n                \"D:\\\\SCP project\\\\lab\\\\roles:/opt/scp/roles:ro\"\n            ],\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"scp-g03-m1_branch\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": [\n                \"CAP_CHOWN\",\n                \"CAP_DAC_OVERRIDE\",\n                \"CAP_KILL\",\n                \"CAP_NET_ADMIN\",\n                \"CAP_NET_RAW\",\n                \"CAP_SETGID\",\n                \"CAP_SETUID\"\n            ],\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": null,\n            \"DnsSearch\": null,\n            \"ExtraHosts\": [\n                \"gw-hq:172.16.3.10\",\n                \"gw-hq.g03.scp.lab:172.16.3.10\",\n                \"attacker:172.16.3.66\",\n                \"pki.g03.scp.lab:10.3.1.10\",\n                \"gw-branch.g03.scp.lab:172.16.3.20\",\n                \"client-br.g03.scp.lab:10.3.2.10\",\n                \"web-hq.g03.scp.lab:10.3.1.10\",\n                \"web-hq:10.3.1.10\",\n                \"portal.g03.scp.lab:10.3.1.10\",\n                \"attacker.g03.scp.lab:172.16.3.66\",\n                \"gw-branch:172.16.3.20\",\n                \"kdc.g03.scp.lab:10.3.1.20\",\n                \"client-br:10.3.2.10\",\n                \"kdc:10.3.1.20\"\n            ],\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": false,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Sysctls\": {\n                \"net.ipv4.conf.all.rp_filter\": \"0\",\n                \"net.ipv4.conf.default.rp_filter\": \"0\",\n                \"net.ipv4.ip_forward\": \"0\",\n                \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n            },\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": null,\n            \"BlkioDeviceReadBps\": null,\n            \"BlkioDeviceWriteBps\": null,\n            \"BlkioDeviceReadIOps\": null,\n            \"BlkioDeviceWriteIOps\": null,\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": null,\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": null,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ],\n            \"Init\": true\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\",\n                \"Destination\": \"/work\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n                \"Destination\": \"/opt/scp/roles\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"client-br\",\n            \"Domainname\": \"\",\n            \"User\": \"\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": true,\n            \"AttachStderr\": true,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"GROUP_ID=03\",\n                \"GROUP_NUM=3\",\n                \"LAB_MODE=baseline\",\n                \"ROLE=client-br\",\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Cmd\": null,\n            \"Healthcheck\": {\n                \"Test\": [\n                    \"CMD\",\n                    \"bash\",\n                    \"/opt/scp/roles/healthcheck.sh\"\n                ],\n                \"Interval\": 10000000000,\n                \"Timeout\": 3000000000,\n                \"Retries\": 6\n            },\n            \"Image\": \"scp-g03-lab:ubuntu24.04-m1\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/work\",\n            \"Entrypoint\": [\n                \"bash\",\n                \"/opt/scp/roles/baseline-entrypoint.sh\"\n            ],\n            \"Labels\": {\n                \"com.docker.compose.config-hash\": \"806d5f0672b8d969356fa0c975e373e851355aecc018eaba36226084e47a7ec4\",\n                \"com.docker.compose.container-number\": \"1\",\n                \"com.docker.compose.depends_on\": \"\",\n                \"com.docker.compose.image\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n                \"com.docker.compose.oneoff\": \"False\",\n                \"com.docker.compose.project\": \"scp-g03-m1\",\n                \"com.docker.compose.project.config_files\": \"D:\\\\SCP project\\\\lab\\\\docker-compose.yml\",\n                \"com.docker.compose.project.working_dir\": \"D:\\\\SCP project\\\\lab\",\n                \"com.docker.compose.service\": \"client-br\",\n                \"com.docker.compose.version\": \"5.6.1\",\n                \"org.opencontainers.image.version\": \"24.04\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"9fb6b6e68f8fe1cce0b510790a707fb5cce54f62d78eeba981a543c1547e2b91\",\n            \"SandboxKey\": \"/var/run/docker/netns/9fb6b6e68f8f\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"scp-g03-m1_branch\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"10.3.2.10\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-client-br-1\",\n                        \"client-br\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"603ac921a7a9f875d12f27b198d2c48846b456ec19dc509111a8d289bc1e159c\",\n                    \"EndpointID\": \"dde3f6e29f25daceb314114233ada0f417d26190dbfff34d5e81ce94c271e930\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"10.3.2.10\",\n                    \"MacAddress\": \"5e:2a:fb:b1:9b:15\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-client-br-1\",\n                        \"client-br\",\n                        \"96faaf602869\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n            \"size\": 1055,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    },\n    {\n        \"Id\": \"2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71\",\n        \"Created\": \"2026-11-07T20:30:12.239906398Z\",\n        \"Path\": \"bash\",\n        \"Args\": [\n            \"/opt/scp/roles/baseline-entrypoint.sh\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 10657,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-11-07T20:30:14.320995732Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\",\n            \"Health\": {\n                \"Status\": \"healthy\",\n                \"FailingStreak\": 0,\n                \"Log\": [\n                    {\n                        \"Start\": \"2026-11-07T20:44:39.75009827Z\",\n                        \"End\": \"2026-11-07T20:44:39.80360223Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:49.806535868Z\",\n                        \"End\": \"2026-11-07T20:44:49.865632211Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:59.866506981Z\",\n                        \"End\": \"2026-11-07T20:44:59.9176412Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:09.91747224Z\",\n                        \"End\": \"2026-11-07T20:45:09.969425688Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:19.971277458Z\",\n                        \"End\": \"2026-11-07T20:45:20.030700218Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    }\n                ]\n            }\n        },\n        \"Image\": \"sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/scp-g03-m1-gw-branch-1\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": [\n                \"D:\\\\SCP project\\\\lab\\\\roles:/opt/scp/roles:ro\",\n                \"D:\\\\SCP project:/work:ro\"\n            ],\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"scp-g03-m1_branch\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": [\n                \"CAP_CHOWN\",\n                \"CAP_DAC_OVERRIDE\",\n                \"CAP_KILL\",\n                \"CAP_NET_ADMIN\",\n                \"CAP_NET_RAW\",\n                \"CAP_SETGID\",\n                \"CAP_SETUID\"\n            ],\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": null,\n            \"DnsSearch\": null,\n            \"ExtraHosts\": [\n                \"client-br:10.3.2.10\",\n                \"client-br.g03.scp.lab:10.3.2.10\",\n                \"gw-branch:172.16.3.20\",\n                \"gw-branch.g03.scp.lab:172.16.3.20\",\n                \"portal.g03.scp.lab:10.3.1.10\",\n                \"attacker:172.16.3.66\",\n                \"gw-hq:172.16.3.10\",\n                \"attacker.g03.scp.lab:172.16.3.66\",\n                \"pki.g03.scp.lab:10.3.1.10\",\n                \"gw-hq.g03.scp.lab:172.16.3.10\",\n                \"kdc:10.3.1.20\",\n                \"web-hq.g03.scp.lab:10.3.1.10\",\n                \"web-hq:10.3.1.10\",\n                \"kdc.g03.scp.lab:10.3.1.20\"\n            ],\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": false,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Sysctls\": {\n                \"net.ipv4.conf.all.rp_filter\": \"0\",\n                \"net.ipv4.conf.default.rp_filter\": \"0\",\n                \"net.ipv4.ip_forward\": \"1\",\n                \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n            },\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": null,\n            \"BlkioDeviceReadBps\": null,\n            \"BlkioDeviceWriteBps\": null,\n            \"BlkioDeviceReadIOps\": null,\n            \"BlkioDeviceWriteIOps\": null,\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": null,\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": null,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ],\n            \"Init\": true\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\",\n                \"Destination\": \"/work\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n                \"Destination\": \"/opt/scp/roles\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"gw-branch\",\n            \"Domainname\": \"\",\n            \"User\": \"\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": true,\n            \"AttachStderr\": true,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"GROUP_NUM=3\",\n                \"LAB_MODE=baseline\",\n                \"ROLE=gw-branch\",\n                \"GROUP_ID=03\",\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Cmd\": null,\n            \"Healthcheck\": {\n                \"Test\": [\n                    \"CMD\",\n                    \"bash\",\n                    \"/opt/scp/roles/healthcheck.sh\"\n                ],\n                \"Interval\": 10000000000,\n                \"Timeout\": 3000000000,\n                \"Retries\": 6\n            },\n            \"Image\": \"scp-g03-lab:ubuntu24.04-m1\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/work\",\n            \"Entrypoint\": [\n                \"bash\",\n                \"/opt/scp/roles/baseline-entrypoint.sh\"\n            ],\n            \"Labels\": {\n                \"com.docker.compose.config-hash\": \"76db2b9efcc6a6fba0c3d615c671e3734aa6aa2d0d31f6af72688051639a9293\",\n                \"com.docker.compose.container-number\": \"1\",\n                \"com.docker.compose.depends_on\": \"\",\n                \"com.docker.compose.image\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n                \"com.docker.compose.oneoff\": \"False\",\n                \"com.docker.compose.project\": \"scp-g03-m1\",\n                \"com.docker.compose.project.config_files\": \"D:\\\\SCP project\\\\lab\\\\docker-compose.yml\",\n                \"com.docker.compose.project.working_dir\": \"D:\\\\SCP project\\\\lab\",\n                \"com.docker.compose.service\": \"gw-branch\",\n                \"com.docker.compose.version\": \"5.6.1\",\n                \"org.opencontainers.image.version\": \"24.04\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"ccf9e6bdae58082223a46bfe740e3a408a859257f3f5f0cfe2f9c609e721c309\",\n            \"SandboxKey\": \"/var/run/docker/netns/ccf9e6bdae58\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"scp-g03-m1_branch\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"10.3.2.1\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-gw-branch-1\",\n                        \"gw-branch\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"603ac921a7a9f875d12f27b198d2c48846b456ec19dc509111a8d289bc1e159c\",\n                    \"EndpointID\": \"930205535d6c227563ba6e0a43996d80c4c21b08c3b1f5943daf3cdd26076673\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"10.3.2.1\",\n                    \"MacAddress\": \"02:33:f4:6b:5c:6c\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-gw-branch-1\",\n                        \"gw-branch\",\n                        \"2853d71ee144\"\n                    ]\n                },\n                \"scp-g03-m1_wan\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"172.16.3.20\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-gw-branch-1\",\n                        \"gw-branch\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"1dd592f648aeb8d006aa7385ec920dedad4570b61cab29f4a62a63f72ce0f053\",\n                    \"EndpointID\": \"5fd113579b13efcdaa81cbe409cb3735c0baddf45dc3bed46baaac7e616bda1e\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"172.16.3.20\",\n                    \"MacAddress\": \"56:f9:40:80:b3:a0\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-gw-branch-1\",\n                        \"gw-branch\",\n                        \"2853d71ee144\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n            \"size\": 1055,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    },\n    {\n        \"Id\": \"e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455\",\n        \"Created\": \"2026-11-07T20:30:12.210121006Z\",\n        \"Path\": \"bash\",\n        \"Args\": [\n            \"/opt/scp/roles/baseline-entrypoint.sh\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 10349,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-11-07T20:30:13.169933846Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\",\n            \"Health\": {\n                \"Status\": \"healthy\",\n                \"FailingStreak\": 0,\n                \"Log\": [\n                    {\n                        \"Start\": \"2026-11-07T20:44:38.724619566Z\",\n                        \"End\": \"2026-11-07T20:44:38.778383448Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:48.779861553Z\",\n                        \"End\": \"2026-11-07T20:44:48.832942783Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:58.834437319Z\",\n                        \"End\": \"2026-11-07T20:44:58.885566337Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:08.884824444Z\",\n                        \"End\": \"2026-11-07T20:45:08.936947401Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:18.937765265Z\",\n                        \"End\": \"2026-11-07T20:45:18.997102417Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    }\n                ]\n            }\n        },\n        \"Image\": \"sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/scp-g03-m1-gw-hq-1\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": [\n                \"D:\\\\SCP project:/work:ro\",\n                \"D:\\\\SCP project\\\\lab\\\\roles:/opt/scp/roles:ro\",\n                \"D:\\\\SCP project\\\\evidence:/evidence:rw\"\n            ],\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"scp-g03-m1_hq\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": [\n                \"CAP_CHOWN\",\n                \"CAP_DAC_OVERRIDE\",\n                \"CAP_KILL\",\n                \"CAP_NET_ADMIN\",\n                \"CAP_NET_RAW\",\n                \"CAP_SETGID\",\n                \"CAP_SETUID\"\n            ],\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": null,\n            \"DnsSearch\": null,\n            \"ExtraHosts\": [\n                \"kdc.g03.scp.lab:10.3.1.20\",\n                \"web-hq.g03.scp.lab:10.3.1.10\",\n                \"portal.g03.scp.lab:10.3.1.10\",\n                \"attacker.g03.scp.lab:172.16.3.66\",\n                \"client-br:10.3.2.10\",\n                \"gw-branch:172.16.3.20\",\n                \"pki.g03.scp.lab:10.3.1.10\",\n                \"kdc:10.3.1.20\",\n                \"gw-branch.g03.scp.lab:172.16.3.20\",\n                \"gw-hq.g03.scp.lab:172.16.3.10\",\n                \"attacker:172.16.3.66\",\n                \"client-br.g03.scp.lab:10.3.2.10\",\n                \"gw-hq:172.16.3.10\",\n                \"web-hq:10.3.1.10\"\n            ],\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": false,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Sysctls\": {\n                \"net.ipv4.conf.all.rp_filter\": \"0\",\n                \"net.ipv4.conf.default.rp_filter\": \"0\",\n                \"net.ipv4.ip_forward\": \"1\",\n                \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n            },\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": null,\n            \"BlkioDeviceReadBps\": null,\n            \"BlkioDeviceWriteBps\": null,\n            \"BlkioDeviceReadIOps\": null,\n            \"BlkioDeviceWriteIOps\": null,\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": null,\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": null,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ],\n            \"Init\": true\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\evidence\",\n                \"Destination\": \"/evidence\",\n                \"Mode\": \"rw\",\n                \"RW\": true,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\",\n                \"Destination\": \"/work\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n                \"Destination\": \"/opt/scp/roles\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"gw-hq\",\n            \"Domainname\": \"\",\n            \"User\": \"\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": true,\n            \"AttachStderr\": true,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"GROUP_NUM=3\",\n                \"LAB_MODE=baseline\",\n                \"ROLE=gw-hq\",\n                \"GROUP_ID=03\",\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Cmd\": null,\n            \"Healthcheck\": {\n                \"Test\": [\n                    \"CMD\",\n                    \"bash\",\n                    \"/opt/scp/roles/healthcheck.sh\"\n                ],\n                \"Interval\": 10000000000,\n                \"Timeout\": 3000000000,\n                \"Retries\": 6\n            },\n            \"Image\": \"scp-g03-lab:ubuntu24.04-m1\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/work\",\n            \"Entrypoint\": [\n                \"bash\",\n                \"/opt/scp/roles/baseline-entrypoint.sh\"\n            ],\n            \"Labels\": {\n                \"com.docker.compose.config-hash\": \"a2217d64d4f759f3dfc390568d9e6f50c5c3348435367cdaff9612866e713c9e\",\n                \"com.docker.compose.container-number\": \"1\",\n                \"com.docker.compose.depends_on\": \"\",\n                \"com.docker.compose.image\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n                \"com.docker.compose.oneoff\": \"False\",\n                \"com.docker.compose.project\": \"scp-g03-m1\",\n                \"com.docker.compose.project.config_files\": \"D:\\\\SCP project\\\\lab\\\\docker-compose.yml\",\n                \"com.docker.compose.project.working_dir\": \"D:\\\\SCP project\\\\lab\",\n                \"com.docker.compose.service\": \"gw-hq\",\n                \"com.docker.compose.version\": \"5.6.1\",\n                \"org.opencontainers.image.version\": \"24.04\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"6ab29560d913a706ed2bf9e570d8b8bcb1d17cfb479181e1dd83365d07ad18c2\",\n            \"SandboxKey\": \"/var/run/docker/netns/6ab29560d913\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"scp-g03-m1_hq\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"10.3.1.1\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-gw-hq-1\",\n                        \"gw-hq\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"63e7c55733b6042c1fffd6b37e81a68595ed042033da5ddb8fb3fe6fe052cc3e\",\n                    \"EndpointID\": \"c0be0c3ebd5b937f1ba11dac728ba44fc3ff6e50545db9552b42ecb18ca1ffa7\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"10.3.1.1\",\n                    \"MacAddress\": \"9a:b6:31:19:09:46\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-gw-hq-1\",\n                        \"gw-hq\",\n                        \"e8e69905e6a6\"\n                    ]\n                },\n                \"scp-g03-m1_wan\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"172.16.3.10\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-gw-hq-1\",\n                        \"gw-hq\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"1dd592f648aeb8d006aa7385ec920dedad4570b61cab29f4a62a63f72ce0f053\",\n                    \"EndpointID\": \"aece2f9cb5a3cb677d316f5fd1294c45bb3c0a8a263b56dd6664104ddbb92a83\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"172.16.3.10\",\n                    \"MacAddress\": \"9e:09:b6:c8:3f:db\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-gw-hq-1\",\n                        \"gw-hq\",\n                        \"e8e69905e6a6\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n            \"size\": 1055,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    },\n    {\n        \"Id\": \"3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b\",\n        \"Created\": \"2026-11-07T20:30:12.170020216Z\",\n        \"Path\": \"bash\",\n        \"Args\": [\n            \"/opt/scp/roles/baseline-entrypoint.sh\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 10509,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-11-07T20:30:13.801691833Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\",\n            \"Health\": {\n                \"Status\": \"healthy\",\n                \"FailingStreak\": 0,\n                \"Log\": [\n                    {\n                        \"Start\": \"2026-11-07T20:44:39.367297443Z\",\n                        \"End\": \"2026-11-07T20:44:39.42252535Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:49.423229257Z\",\n                        \"End\": \"2026-11-07T20:44:49.483328686Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:59.484614629Z\",\n                        \"End\": \"2026-11-07T20:44:59.535367715Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:09.533703087Z\",\n                        \"End\": \"2026-11-07T20:45:09.589346251Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:19.590609048Z\",\n                        \"End\": \"2026-11-07T20:45:19.649427356Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"\"\n                    }\n                ]\n            }\n        },\n        \"Image\": \"sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/scp-g03-m1-kdc-1\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": [\n                \"D:\\\\SCP project\\\\lab\\\\roles:/opt/scp/roles:ro\",\n                \"D:\\\\SCP project:/work:ro\"\n            ],\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"scp-g03-m1_hq\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": [\n                \"CAP_CHOWN\",\n                \"CAP_DAC_OVERRIDE\",\n                \"CAP_KILL\",\n                \"CAP_NET_ADMIN\",\n                \"CAP_NET_RAW\",\n                \"CAP_SETGID\",\n                \"CAP_SETUID\"\n            ],\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": null,\n            \"DnsSearch\": null,\n            \"ExtraHosts\": [\n                \"client-br:10.3.2.10\",\n                \"web-hq.g03.scp.lab:10.3.1.10\",\n                \"attacker:172.16.3.66\",\n                \"gw-branch:172.16.3.20\",\n                \"gw-hq:172.16.3.10\",\n                \"gw-branch.g03.scp.lab:172.16.3.20\",\n                \"portal.g03.scp.lab:10.3.1.10\",\n                \"kdc:10.3.1.20\",\n                \"web-hq:10.3.1.10\",\n                \"attacker.g03.scp.lab:172.16.3.66\",\n                \"pki.g03.scp.lab:10.3.1.10\",\n                \"gw-hq.g03.scp.lab:172.16.3.10\",\n                \"kdc.g03.scp.lab:10.3.1.20\",\n                \"client-br.g03.scp.lab:10.3.2.10\"\n            ],\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": false,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Sysctls\": {\n                \"net.ipv4.conf.all.rp_filter\": \"0\",\n                \"net.ipv4.conf.default.rp_filter\": \"0\",\n                \"net.ipv4.ip_forward\": \"0\",\n                \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n            },\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": null,\n            \"BlkioDeviceReadBps\": null,\n            \"BlkioDeviceWriteBps\": null,\n            \"BlkioDeviceReadIOps\": null,\n            \"BlkioDeviceWriteIOps\": null,\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": null,\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": null,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ],\n            \"Init\": true\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\",\n                \"Destination\": \"/work\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n                \"Destination\": \"/opt/scp/roles\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"kdc\",\n            \"Domainname\": \"\",\n            \"User\": \"\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": true,\n            \"AttachStderr\": true,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"ROLE=kdc\",\n                \"GROUP_ID=03\",\n                \"GROUP_NUM=3\",\n                \"LAB_MODE=baseline\",\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Cmd\": null,\n            \"Healthcheck\": {\n                \"Test\": [\n                    \"CMD\",\n                    \"bash\",\n                    \"/opt/scp/roles/healthcheck.sh\"\n                ],\n                \"Interval\": 10000000000,\n                \"Timeout\": 3000000000,\n                \"Retries\": 6\n            },\n            \"Image\": \"scp-g03-lab:ubuntu24.04-m1\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/work\",\n            \"Entrypoint\": [\n                \"bash\",\n                \"/opt/scp/roles/baseline-entrypoint.sh\"\n            ],\n            \"Labels\": {\n                \"com.docker.compose.config-hash\": \"f5d4b4877a3f62f508585197e2335aa45f0644a0c6715c9eea60c5606d752ce7\",\n                \"com.docker.compose.container-number\": \"1\",\n                \"com.docker.compose.depends_on\": \"\",\n                \"com.docker.compose.image\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n                \"com.docker.compose.oneoff\": \"False\",\n                \"com.docker.compose.project\": \"scp-g03-m1\",\n                \"com.docker.compose.project.config_files\": \"D:\\\\SCP project\\\\lab\\\\docker-compose.yml\",\n                \"com.docker.compose.project.working_dir\": \"D:\\\\SCP project\\\\lab\",\n                \"com.docker.compose.service\": \"kdc\",\n                \"com.docker.compose.version\": \"5.6.1\",\n                \"org.opencontainers.image.version\": \"24.04\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"8a3278440cd22eae8732056118d5fd376475d52f073bda90f32b26bf7a0050cd\",\n            \"SandboxKey\": \"/var/run/docker/netns/8a3278440cd2\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"scp-g03-m1_hq\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"10.3.1.20\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-kdc-1\",\n                        \"kdc\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"63e7c55733b6042c1fffd6b37e81a68595ed042033da5ddb8fb3fe6fe052cc3e\",\n                    \"EndpointID\": \"baf9c42b9152a20cc9ed33b579529b49e7b9b0a4fab59ef7525be5bc427e8eac\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"10.3.1.20\",\n                    \"MacAddress\": \"7e:23:ea:de:ad:28\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-kdc-1\",\n                        \"kdc\",\n                        \"3fa82fc6cdf8\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n            \"size\": 1055,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    },\n    {\n        \"Id\": \"25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc\",\n        \"Created\": \"2026-11-07T20:30:12.16765801Z\",\n        \"Path\": \"bash\",\n        \"Args\": [\n            \"/opt/scp/roles/baseline-entrypoint.sh\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 10583,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-11-07T20:30:14.068728475Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\",\n            \"Health\": {\n                \"Status\": \"healthy\",\n                \"FailingStreak\": 0,\n                \"Log\": [\n                    {\n                        \"Start\": \"2026-11-07T20:44:40.308158335Z\",\n                        \"End\": \"2026-11-07T20:44:40.369487862Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"SCP-M1-G03-HTTP-CLEAR\\n\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:44:50.371285162Z\",\n                        \"End\": \"2026-11-07T20:44:50.434590865Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"SCP-M1-G03-HTTP-CLEAR\\n\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:00.433571653Z\",\n                        \"End\": \"2026-11-07T20:45:00.49770767Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"SCP-M1-G03-HTTP-CLEAR\\n\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:10.49954827Z\",\n                        \"End\": \"2026-11-07T20:45:10.562734779Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"SCP-M1-G03-HTTP-CLEAR\\n\"\n                    },\n                    {\n                        \"Start\": \"2026-11-07T20:45:20.564424759Z\",\n                        \"End\": \"2026-11-07T20:45:20.765149649Z\",\n                        \"ExitCode\": 0,\n                        \"Output\": \"SCP-M1-G03-HTTP-CLEAR\\n\"\n                    }\n                ]\n            }\n        },\n        \"Image\": \"sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc/hosts\",\n        \"LogPath\": \"\",\n        \"Name\": \"/scp-g03-m1-web-hq-1\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": [\n                \"D:\\\\SCP project:/work:ro\",\n                \"D:\\\\SCP project\\\\lab\\\\roles:/opt/scp/roles:ro\"\n            ],\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"local\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"scp-g03-m1_hq\",\n            \"PortBindings\": {},\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": [\n                \"CAP_CHOWN\",\n                \"CAP_DAC_OVERRIDE\",\n                \"CAP_KILL\",\n                \"CAP_NET_ADMIN\",\n                \"CAP_NET_BIND_SERVICE\",\n                \"CAP_NET_RAW\",\n                \"CAP_SETGID\",\n                \"CAP_SETUID\"\n            ],\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": null,\n            \"DnsSearch\": null,\n            \"ExtraHosts\": [\n                \"gw-hq:172.16.3.10\",\n                \"kdc.g03.scp.lab:10.3.1.20\",\n                \"client-br.g03.scp.lab:10.3.2.10\",\n                \"pki.g03.scp.lab:10.3.1.10\",\n                \"web-hq.g03.scp.lab:10.3.1.10\",\n                \"gw-branch.g03.scp.lab:172.16.3.20\",\n                \"client-br:10.3.2.10\",\n                \"attacker.g03.scp.lab:172.16.3.66\",\n                \"kdc:10.3.1.20\",\n                \"web-hq:10.3.1.10\",\n                \"attacker:172.16.3.66\",\n                \"portal.g03.scp.lab:10.3.1.10\",\n                \"gw-hq.g03.scp.lab:172.16.3.10\",\n                \"gw-branch:172.16.3.20\"\n            ],\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": false,\n            \"SecurityOpt\": [\n                \"no-new-privileges:true\"\n            ],\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Sysctls\": {\n                \"net.ipv4.conf.all.rp_filter\": \"0\",\n                \"net.ipv4.conf.default.rp_filter\": \"0\",\n                \"net.ipv4.ip_forward\": \"0\",\n                \"net.ipv6.conf.all.disable_ipv6\": \"1\"\n            },\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": null,\n            \"BlkioDeviceReadBps\": null,\n            \"BlkioDeviceWriteBps\": null,\n            \"BlkioDeviceReadIOps\": null,\n            \"BlkioDeviceWriteIOps\": null,\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": null,\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": null,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ],\n            \"Init\": true\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\",\n                \"Destination\": \"/work\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            },\n            {\n                \"Type\": \"bind\",\n                \"Source\": \"D:\\\\SCP project\\\\lab\\\\roles\",\n                \"Destination\": \"/opt/scp/roles\",\n                \"Mode\": \"ro\",\n                \"RW\": false,\n                \"Propagation\": \"rprivate\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"web-hq\",\n            \"Domainname\": \"\",\n            \"User\": \"\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": true,\n            \"AttachStderr\": true,\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"LAB_MODE=baseline\",\n                \"ROLE=web-hq\",\n                \"GROUP_ID=03\",\n                \"GROUP_NUM=3\",\n                \"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"DEBIAN_FRONTEND=noninteractive\"\n            ],\n            \"Cmd\": null,\n            \"Healthcheck\": {\n                \"Test\": [\n                    \"CMD\",\n                    \"bash\",\n                    \"/opt/scp/roles/healthcheck.sh\"\n                ],\n                \"Interval\": 10000000000,\n                \"Timeout\": 3000000000,\n                \"Retries\": 6\n            },\n            \"Image\": \"scp-g03-lab:ubuntu24.04-m1\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/work\",\n            \"Entrypoint\": [\n                \"bash\",\n                \"/opt/scp/roles/baseline-entrypoint.sh\"\n            ],\n            \"Labels\": {\n                \"com.docker.compose.config-hash\": \"fa902dc61b6c98e725774add9cc92101b7d408fe5a0301260fbd89945cf9e439\",\n                \"com.docker.compose.container-number\": \"1\",\n                \"com.docker.compose.depends_on\": \"\",\n                \"com.docker.compose.image\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n                \"com.docker.compose.oneoff\": \"False\",\n                \"com.docker.compose.project\": \"scp-g03-m1\",\n                \"com.docker.compose.project.config_files\": \"D:\\\\SCP project\\\\lab\\\\docker-compose.yml\",\n                \"com.docker.compose.project.working_dir\": \"D:\\\\SCP project\\\\lab\",\n                \"com.docker.compose.service\": \"web-hq\",\n                \"com.docker.compose.version\": \"5.6.1\",\n                \"org.opencontainers.image.version\": \"24.04\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"6825ff05c101809914ba764193fd7cbc21805e4a53187fa5a12c8b82ff041a8d\",\n            \"SandboxKey\": \"/var/run/docker/netns/6825ff05c101\",\n            \"Ports\": {},\n            \"Networks\": {\n                \"scp-g03-m1_hq\": {\n                    \"IPAMConfig\": {\n                        \"IPv4Address\": \"10.3.1.10\"\n                    },\n                    \"Links\": null,\n                    \"Aliases\": [\n                        \"scp-g03-m1-web-hq-1\",\n                        \"web-hq\"\n                    ],\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"63e7c55733b6042c1fffd6b37e81a68595ed042033da5ddb8fb3fe6fe052cc3e\",\n                    \"EndpointID\": \"464fbe4c67d1fbeb20b9a15149c51fc155a229c66dc1e653bf299636f1c316fe\",\n                    \"Gateway\": \"\",\n                    \"IPAddress\": \"10.3.1.10\",\n                    \"MacAddress\": \"aa:5a:76:e1:22:d9\",\n                    \"IPPrefixLen\": 24,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"scp-g03-m1-web-hq-1\",\n                        \"web-hq\",\n                        \"25c41aca1753\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:92e55acfebf76b524edd0e876e4983f0118d250060fb302c244512a5b0bf135b\",\n            \"size\": 1055,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    }\n]",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:27.584477+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "attacker",
+        "ip",
+        "-4",
+        "route"
+      ],
+      "exit_code": 0,
+      "stdout": "10.3.2.0/24 via 172.16.3.20 dev eth0 \n172.16.3.0/24 dev eth0 proto kernel scope link src 172.16.3.66",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:27.884259+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "attacker",
+        "ip",
+        "route",
+        "get",
+        "192.0.2.1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:28.339300+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "attacker",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:28.782383+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "client-br",
+        "ip",
+        "-4",
+        "route"
+      ],
+      "exit_code": 0,
+      "stdout": "10.3.1.0/24 via 10.3.2.1 dev eth0 \n10.3.2.0/24 dev eth0 proto kernel scope link src 10.3.2.10 \n172.16.3.0/24 via 10.3.2.1 dev eth0",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:29.085964+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "client-br",
+        "ip",
+        "route",
+        "get",
+        "192.0.2.1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:29.549420+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "client-br",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:30.034374+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-branch",
+        "ip",
+        "-4",
+        "route"
+      ],
+      "exit_code": 0,
+      "stdout": "10.3.1.0/24 via 172.16.3.10 dev eth1 \n10.3.2.0/24 dev eth0 proto kernel scope link src 10.3.2.1 \n172.16.3.0/24 dev eth1 proto kernel scope link src 172.16.3.20",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:30.342616+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-branch",
+        "ip",
+        "route",
+        "get",
+        "192.0.2.1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:30.790903+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-branch",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth0 -o eth1 -p tcp -m tcp --dport 80 -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth1 -o eth0 -p tcp -m tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth0 -o eth1 -p icmp -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth1 -o eth0 -p icmp -j ACCEPT\n-A FORWARD -s 172.16.3.66/32 -d 10.3.2.0/24 -i eth1 -o eth0 -j ACCEPT\n-A FORWARD -s 10.3.2.0/24 -d 172.16.3.66/32 -i eth0 -o eth1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:31.246189+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "ip",
+        "-4",
+        "route"
+      ],
+      "exit_code": 0,
+      "stdout": "10.3.1.0/24 dev eth0 proto kernel scope link src 10.3.1.1 \n10.3.2.0/24 via 172.16.3.20 dev eth1 \n172.16.3.0/24 dev eth1 proto kernel scope link src 172.16.3.10",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:31.543868+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "ip",
+        "route",
+        "get",
+        "192.0.2.1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:31.986947+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth1 -o eth0 -p tcp -m tcp --dport 80 -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth0 -o eth1 -p tcp -m tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth1 -o eth0 -p icmp -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth0 -o eth1 -p icmp -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:32.441402+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "kdc",
+        "ip",
+        "-4",
+        "route"
+      ],
+      "exit_code": 0,
+      "stdout": "10.3.1.0/24 dev eth0 proto kernel scope link src 10.3.1.20 \n10.3.2.0/24 via 10.3.1.1 dev eth0",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:32.742078+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "kdc",
+        "ip",
+        "route",
+        "get",
+        "192.0.2.1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:33.226582+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "kdc",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:33.688135+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "web-hq",
+        "ip",
+        "-4",
+        "route"
+      ],
+      "exit_code": 0,
+      "stdout": "10.3.1.0/24 dev eth0 proto kernel scope link src 10.3.1.10 \n10.3.2.0/24 via 10.3.1.1 dev eth0",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:33.971669+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "web-hq",
+        "ip",
+        "route",
+        "get",
+        "192.0.2.1"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:34.435840+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "web-hq",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:34.608885+00:00",
+      "argv": [
+        "docker",
+        "network",
+        "ls",
+        "-q",
+        "--filter",
+        "label=com.docker.compose.project=scp-g03-m1"
+      ],
+      "exit_code": 0,
+      "stdout": "603ac921a7a9\n63e7c55733b6\n1dd592f648ae",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:34.785979+00:00",
+      "argv": [
+        "docker",
+        "network",
+        "inspect",
+        "603ac921a7a9",
+        "63e7c55733b6",
+        "1dd592f648ae"
+      ],
+      "exit_code": 0,
+      "stdout": "[\n    {\n        \"Name\": \"scp-g03-m1_branch\",\n        \"Id\": \"603ac921a7a9f875d12f27b198d2c48846b456ec19dc509111a8d289bc1e159c\",\n        \"Created\": \"2026-11-07T20:30:12.072815155Z\",\n        \"Scope\": \"local\",\n        \"Driver\": \"bridge\",\n        \"EnableIPv4\": true,\n        \"EnableIPv6\": false,\n        \"IPAM\": {\n            \"Driver\": \"default\",\n            \"Options\": null,\n            \"Config\": [\n                {\n                    \"Subnet\": \"10.3.2.0/24\",\n                    \"Gateway\": \"10.3.2.254\"\n                }\n            ]\n        },\n        \"Internal\": true,\n        \"Attachable\": false,\n        \"Ingress\": false,\n        \"ConfigFrom\": {\n            \"Network\": \"\"\n        },\n        \"ConfigOnly\": false,\n        \"Options\": {\n            \"com.docker.network.bridge.enable_ip_masquerade\": \"false\",\n            \"com.docker.network.bridge.gateway_mode_ipv4\": \"isolated\",\n            \"com.docker.network.enable_ipv4\": \"true\"\n        },\n        \"Labels\": {\n            \"com.docker.compose.config-hash\": \"9d26761b8e3633790a367f71306877188bfa80b6d05efd27e2467e57b8a90ed2\",\n            \"com.docker.compose.network\": \"branch\",\n            \"com.docker.compose.project\": \"scp-g03-m1\",\n            \"com.docker.compose.version\": \"5.6.1\"\n        },\n        \"Containers\": {\n            \"2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71\": {\n                \"Name\": \"scp-g03-m1-gw-branch-1\",\n                \"EndpointID\": \"930205535d6c227563ba6e0a43996d80c4c21b08c3b1f5943daf3cdd26076673\",\n                \"MacAddress\": \"02:33:f4:6b:5c:6c\",\n                \"IPv4Address\": \"10.3.2.1/24\",\n                \"IPv6Address\": \"\"\n            },\n            \"96faaf6028696a48177fef7f609646665644ab7b73b145c21c2ab2a047d3e73b\": {\n                \"Name\": \"scp-g03-m1-client-br-1\",\n                \"EndpointID\": \"dde3f6e29f25daceb314114233ada0f417d26190dbfff34d5e81ce94c271e930\",\n                \"MacAddress\": \"5e:2a:fb:b1:9b:15\",\n                \"IPv4Address\": \"10.3.2.10/24\",\n                \"IPv6Address\": \"\"\n            }\n        },\n        \"Status\": {\n            \"IPAM\": {\n                \"Subnets\": {\n                    \"10.3.2.0/24\": {\n                        \"IPsInUse\": 5,\n                        \"DynamicIPsAvailable\": 251\n                    }\n                }\n            }\n        }\n    },\n    {\n        \"Name\": \"scp-g03-m1_hq\",\n        \"Id\": \"63e7c55733b6042c1fffd6b37e81a68595ed042033da5ddb8fb3fe6fe052cc3e\",\n        \"Created\": \"2026-11-07T20:30:12.059368885Z\",\n        \"Scope\": \"local\",\n        \"Driver\": \"bridge\",\n        \"EnableIPv4\": true,\n        \"EnableIPv6\": false,\n        \"IPAM\": {\n            \"Driver\": \"default\",\n            \"Options\": null,\n            \"Config\": [\n                {\n                    \"Subnet\": \"10.3.1.0/24\",\n                    \"Gateway\": \"10.3.1.254\"\n                }\n            ]\n        },\n        \"Internal\": true,\n        \"Attachable\": false,\n        \"Ingress\": false,\n        \"ConfigFrom\": {\n            \"Network\": \"\"\n        },\n        \"ConfigOnly\": false,\n        \"Options\": {\n            \"com.docker.network.bridge.enable_ip_masquerade\": \"false\",\n            \"com.docker.network.bridge.gateway_mode_ipv4\": \"isolated\",\n            \"com.docker.network.enable_ipv4\": \"true\"\n        },\n        \"Labels\": {\n            \"com.docker.compose.config-hash\": \"af73e5761eddab3f10b8ce2f2d950047b97fd67565784c2859b9a366b13a74fb\",\n            \"com.docker.compose.network\": \"hq\",\n            \"com.docker.compose.project\": \"scp-g03-m1\",\n            \"com.docker.compose.version\": \"5.6.1\"\n        },\n        \"Containers\": {\n            \"25c41aca1753f77d03a5b05617719a33c739aceed81b07fad32b7c3f77c7d2fc\": {\n                \"Name\": \"scp-g03-m1-web-hq-1\",\n                \"EndpointID\": \"464fbe4c67d1fbeb20b9a15149c51fc155a229c66dc1e653bf299636f1c316fe\",\n                \"MacAddress\": \"aa:5a:76:e1:22:d9\",\n                \"IPv4Address\": \"10.3.1.10/24\",\n                \"IPv6Address\": \"\"\n            },\n            \"3fa82fc6cdf8ecfc0466d19a1287d3b536c8804c9582916bb3a161830b3df01b\": {\n                \"Name\": \"scp-g03-m1-kdc-1\",\n                \"EndpointID\": \"baf9c42b9152a20cc9ed33b579529b49e7b9b0a4fab59ef7525be5bc427e8eac\",\n                \"MacAddress\": \"7e:23:ea:de:ad:28\",\n                \"IPv4Address\": \"10.3.1.20/24\",\n                \"IPv6Address\": \"\"\n            },\n            \"e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455\": {\n                \"Name\": \"scp-g03-m1-gw-hq-1\",\n                \"EndpointID\": \"c0be0c3ebd5b937f1ba11dac728ba44fc3ff6e50545db9552b42ecb18ca1ffa7\",\n                \"MacAddress\": \"9a:b6:31:19:09:46\",\n                \"IPv4Address\": \"10.3.1.1/24\",\n                \"IPv6Address\": \"\"\n            }\n        },\n        \"Status\": {\n            \"IPAM\": {\n                \"Subnets\": {\n                    \"10.3.1.0/24\": {\n                        \"IPsInUse\": 6,\n                        \"DynamicIPsAvailable\": 250\n                    }\n                }\n            }\n        }\n    },\n    {\n        \"Name\": \"scp-g03-m1_wan\",\n        \"Id\": \"1dd592f648aeb8d006aa7385ec920dedad4570b61cab29f4a62a63f72ce0f053\",\n        \"Created\": \"2026-11-07T20:30:12.059322481Z\",\n        \"Scope\": \"local\",\n        \"Driver\": \"bridge\",\n        \"EnableIPv4\": true,\n        \"EnableIPv6\": false,\n        \"IPAM\": {\n            \"Driver\": \"default\",\n            \"Options\": null,\n            \"Config\": [\n                {\n                    \"Subnet\": \"172.16.3.0/24\",\n                    \"Gateway\": \"172.16.3.254\"\n                }\n            ]\n        },\n        \"Internal\": true,\n        \"Attachable\": false,\n        \"Ingress\": false,\n        \"ConfigFrom\": {\n            \"Network\": \"\"\n        },\n        \"ConfigOnly\": false,\n        \"Options\": {\n            \"com.docker.network.bridge.enable_ip_masquerade\": \"false\",\n            \"com.docker.network.bridge.gateway_mode_ipv4\": \"isolated\",\n            \"com.docker.network.enable_ipv4\": \"true\"\n        },\n        \"Labels\": {\n            \"com.docker.compose.config-hash\": \"309fb215ede770025dc8daa48eae2b8611ca0ab203565f216b65810d62c92e85\",\n            \"com.docker.compose.network\": \"wan\",\n            \"com.docker.compose.project\": \"scp-g03-m1\",\n            \"com.docker.compose.version\": \"5.6.1\"\n        },\n        \"Containers\": {\n            \"2853d71ee144362b19346508c77ed72b4ee880d52e74b1e6df1334f6bafc4a71\": {\n                \"Name\": \"scp-g03-m1-gw-branch-1\",\n                \"EndpointID\": \"5fd113579b13efcdaa81cbe409cb3735c0baddf45dc3bed46baaac7e616bda1e\",\n                \"MacAddress\": \"56:f9:40:80:b3:a0\",\n                \"IPv4Address\": \"172.16.3.20/24\",\n                \"IPv6Address\": \"\"\n            },\n            \"bc61c1271a76d7f8e4f93c7429ff38e9f7f5f9e8c8b1777fe1f7980868c6845d\": {\n                \"Name\": \"scp-g03-m1-attacker-1\",\n                \"EndpointID\": \"d1e29eadde76b2e1a32da57869cb0b03f8d13d887f537d2f10742305182fd8aa\",\n                \"MacAddress\": \"f2:47:2f:89:8d:09\",\n                \"IPv4Address\": \"172.16.3.66/24\",\n                \"IPv6Address\": \"\"\n            },\n            \"e8e69905e6a6ca53b5f3705eebdbe47d03fae050694c4f6bb91b79edfc565455\": {\n                \"Name\": \"scp-g03-m1-gw-hq-1\",\n                \"EndpointID\": \"aece2f9cb5a3cb677d316f5fd1294c45bb3c0a8a263b56dd6664104ddbb92a83\",\n                \"MacAddress\": \"9e:09:b6:c8:3f:db\",\n                \"IPv4Address\": \"172.16.3.10/24\",\n                \"IPv6Address\": \"\"\n            }\n        },\n        \"Status\": {\n            \"IPAM\": {\n                \"Subnets\": {\n                    \"172.16.3.0/24\": {\n                        \"IPsInUse\": 6,\n                        \"DynamicIPsAvailable\": 250\n                    }\n                }\n            }\n        }\n    }\n]",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:35.418951+00:00",
+      "argv": [
+        "python",
+        "PROJECT_ROOT\\lab\\host_l2_transit.py",
+        "--show"
+      ],
+      "exit_code": 0,
+      "stdout": "-N SCP_G03_L2\n-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT\n-A SCP_G03_L2 -m comment --comment scp-g03-m1-l2-transit -j RETURN",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:35.880303+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "ip",
+        "xfrm",
+        "policy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:36.178830+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "pgrep",
+        "-x",
+        "charon"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:36.643184+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth1 -o eth0 -p tcp -m tcp --dport 80 -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth0 -o eth1 -p tcp -m tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth1 -o eth0 -p icmp -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth0 -o eth1 -p icmp -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:37.077571+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-branch",
+        "ip",
+        "xfrm",
+        "policy"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:37.414814+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-branch",
+        "pgrep",
+        "-x",
+        "charon"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:37.905713+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-branch",
+        "iptables",
+        "-S"
+      ],
+      "exit_code": 0,
+      "stdout": "-P INPUT DROP\n-P FORWARD DROP\n-P OUTPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -s 10.3.1.0/24 -j ACCEPT\n-A INPUT -s 10.3.2.0/24 -j ACCEPT\n-A INPUT -s 172.16.3.0/24 -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth0 -o eth1 -p tcp -m tcp --dport 80 -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth1 -o eth0 -p tcp -m tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT\n-A FORWARD -s 10.3.2.10/32 -d 10.3.1.10/32 -i eth0 -o eth1 -p icmp -j ACCEPT\n-A FORWARD -s 10.3.1.10/32 -d 10.3.2.10/32 -i eth1 -o eth0 -p icmp -j ACCEPT\n-A FORWARD -s 172.16.3.66/32 -d 10.3.2.0/24 -i eth1 -o eth0 -j ACCEPT\n-A FORWARD -s 10.3.2.0/24 -d 172.16.3.66/32 -i eth0 -o eth1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A OUTPUT -d 127.0.0.11/32 -j DROP\n-A OUTPUT -o lo -j ACCEPT\n-A OUTPUT -d 10.3.1.0/24 -j ACCEPT\n-A OUTPUT -d 10.3.2.0/24 -j ACCEPT\n-A OUTPUT -d 172.16.3.0/24 -j ACCEPT",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:38.207641+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "attacker",
+        "ip",
+        "route",
+        "get",
+        "10.3.1.10"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "RTNETLINK answers: Network is unreachable"
+    },
+    {
+      "utc": "2026-11-07T20:45:38.673108+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "attacker",
+        "ping",
+        "-c",
+        "1",
+        "-W",
+        "2",
+        "10.3.2.10"
+      ],
+      "exit_code": 0,
+      "stdout": "PING 10.3.2.10 (10.3.2.10) 56(84) bytes of data.\n64 bytes from 10.3.2.10: icmp_seq=1 ttl=63 time=1.93 ms\n\n--- 10.3.2.10 ping statistics ---\n1 packets transmitted, 1 received, 0% packet loss, time 0ms\nrtt min/avg/max/mdev = 1.932/1.932/1.932/0.000 ms",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:38.851300+00:00",
+      "argv": [
+        "docker",
+        "version",
+        "--format",
+        "{{json .}}"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Client\":{\"Version\":\"29.9.2\",\"ApiVersion\":\"1.56\",\"DefaultAPIVersion\":\"1.56\",\"GitCommit\":\"a82e528\",\"GoVersion\":\"go1.26.10\",\"Os\":\"windows\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Oct 20 19:44:07 2026\",\"Context\":\"desktop-linux\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Desktop 4.98.0 (245422)\"},\"Version\":\"29.9.2\",\"ApiVersion\":\"1.56\",\"MinAPIVersion\":\"1.40\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"Components\":[{\"Name\":\"Engine\",\"Version\":\"29.9.2\",\"Details\":{\"ApiVersion\":\"1.56\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Oct 20 18:45:02 2026\",\"Experimental\":\"false\",\"GitCommit\":\"0367cbe\",\"GoVersion\":\"go1.26.10\",\"KernelVersion\":\"6.18.54.1-microsoft-standard-WSL2\",\"MinAPIVersion\":\"1.40\",\"Module\":\"github.com/moby/moby/v2\",\"ModuleVersion\":\"v2.0.0+unknown\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.4.2\",\"Details\":{\"GitCommit\":\"b7a25261e029d68978bbf290df0a62fc819b3c51\"}},{\"Name\":\"runc\",\"Version\":\"1.5.2\",\"Details\":{\"GitCommit\":\"v1.5.2-0-g29dd3dc2\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"GitCommit\":\"0367cbe\",\"GoVersion\":\"go1.26.10\",\"KernelVersion\":\"6.18.54.1-microsoft-standard-WSL2\",\"BuildTime\":\"2026-10-20T18:45:02.000000000+00:00\"}}",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:39.046237+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "version"
+      ],
+      "exit_code": 0,
+      "stdout": "Docker Compose version v5.6.1",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:40.801177+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "bash",
+        "-lc",
+        "openssl version; python3 --version; nginx -v 2>&1; tshark --version | head -n 1; dpkg-query -W openssl strongswan-swanctl python3-cryptography tcpdump tshark nginx; cat /opt/testssl-source-commit.txt"
+      ],
+      "exit_code": 0,
+      "stdout": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)\nPython 3.12.3\nnginx version: nginx/1.24.0 (Ubuntu)\nTShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).\nnginx\t1.24.0-2ubuntu7.19\nopenssl\t3.0.13-0ubuntu3.16\npython3-cryptography\t41.0.7-4ubuntu0.4\nstrongswan-swanctl\t5.9.13-2ubuntu4.24.04.5\ntcpdump\t4.99.4-3ubuntu4.24.04.1\ntshark\t4.2.2-1.1build3\nb6a951d40a5e9d32c51c54b2ebcfaa044d3d9efa",
+      "stderr": "Running as user \"root\" and group \"root\". This could be dangerous."
+    },
+    {
+      "utc": "2026-11-07T20:45:41.274188+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "bash",
+        "/opt/scp/roles/wan-iface.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "eth1",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:42.796230+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "client-br",
+        "bash",
+        "/opt/scp/roles/verify-baseline.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0@if35: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0\n    inet 10.3.2.10/24 brd 10.3.2.255 scope global eth0\n       valid_lft forever preferred_lft forever\n10.3.1.0/24 via 10.3.2.1 dev eth0 \n10.3.2.0/24 dev eth0 proto kernel scope link src 10.3.2.10 \n172.16.3.0/24 via 10.3.2.1 dev eth0 \nPING 10.3.1.10 (10.3.1.10) 56(84) bytes of data.\n64 bytes from 10.3.1.10: icmp_seq=1 ttl=62 time=0.914 ms\n64 bytes from 10.3.1.10: icmp_seq=2 ttl=62 time=0.166 ms\n\n--- 10.3.1.10 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1026ms\nrtt min/avg/max/mdev = 0.166/0.540/0.914/0.374 ms\nSCP-M1-G03-HTTP-CLEAR\nHTTP client result OK; this alone does not prove WAN capture or isolation.",
+      "stderr": ""
+    },
+    {
+      "utc": "2026-11-07T20:45:43.479672+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "tshark",
+        "-r",
+        "/evidence/pcaps/M1_baseline_wan.pcap",
+        "-Y",
+        "http.request or http.response",
+        "-T",
+        "fields",
+        "-e",
+        "frame.number",
+        "-e",
+        "frame.time_epoch",
+        "-e",
+        "ip.src",
+        "-e",
+        "ip.dst",
+        "-e",
+        "tcp.stream",
+        "-e",
+        "http.request.method",
+        "-e",
+        "http.request.uri",
+        "-e",
+        "http.response.code"
+      ],
+      "exit_code": 0,
+      "stdout": "4\t1794083848.629740000\t10.3.2.10\t10.3.1.10\t0\tGET\t/baseline.txt\t\n6\t1794083848.629918000\t10.3.1.10\t10.3.2.10\t0\t\t\t200",
+      "stderr": "Running as user \"root\" and group \"root\". This could be dangerous."
+    },
+    {
+      "utc": "2026-11-07T20:45:44.122027+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "tshark",
+        "-r",
+        "/evidence/pcaps/M1_baseline_wan.pcap",
+        "-Y",
+        "tcp contains \"SCP-M1-G03-HTTP-CLEAR\"",
+        "-T",
+        "fields",
+        "-e",
+        "frame.number"
+      ],
+      "exit_code": 0,
+      "stdout": "6",
+      "stderr": "Running as user \"root\" and group \"root\". This could be dangerous."
+    },
+    {
+      "utc": "2026-11-07T20:45:44.770609+00:00",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "scp-g03-m1",
+        "--project-directory",
+        "PROJECT_ROOT\\lab",
+        "-f",
+        "PROJECT_ROOT\\lab\\docker-compose.yml",
+        "--env-file",
+        "PROJECT_ROOT\\lab\\.env",
+        "exec",
+        "-T",
+        "gw-hq",
+        "tshark",
+        "-r",
+        "/evidence/pcaps/M1_baseline_wan.pcap",
+        "-q",
+        "-z",
+        "follow,tcp,ascii,0"
+      ],
+      "exit_code": 0,
+      "stdout": "===================================================================\nFollow: tcp,ascii\nFilter: tcp.stream eq 0\nNode 0: 10.3.2.10:42840\nNode 1: 10.3.1.10:80\n93\nGET /baseline.txt HTTP/1.1\nHost: portal.g03.scp.lab\nUser-Agent: curl/8.5.0\nAccept: */*\n\n\n\t268\nHTTP/1.1 200 OK\nServer: nginx/1.24.0 (Ubuntu)\nDate: Sat, 07 Nov 2026 20:37:28 GMT\nContent-Type: text/plain\nContent-Length: 22\nLast-Modified: Sat, 07 Nov 2026 20:30:14 GMT\nConnection: keep-alive\nETag: \"6aef8a56-16\"\nAccept-Ranges: bytes\n\nSCP-M1-G03-HTTP-CLEAR\n\n===================================================================",
+      "stderr": "Running as user \"root\" and group \"root\". This could be dangerous."
+    }
+  ],
+  "versions": {
+    "docker": "{\"Client\":{\"Version\":\"29.9.2\",\"ApiVersion\":\"1.56\",\"DefaultAPIVersion\":\"1.56\",\"GitCommit\":\"a82e528\",\"GoVersion\":\"go1.26.10\",\"Os\":\"windows\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Oct 20 19:44:07 2026\",\"Context\":\"desktop-linux\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Desktop 4.98.0 (245422)\"},\"Version\":\"29.9.2\",\"ApiVersion\":\"1.56\",\"MinAPIVersion\":\"1.40\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"Components\":[{\"Name\":\"Engine\",\"Version\":\"29.9.2\",\"Details\":{\"ApiVersion\":\"1.56\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Oct 20 18:45:02 2026\",\"Experimental\":\"false\",\"GitCommit\":\"0367cbe\",\"GoVersion\":\"go1.26.10\",\"KernelVersion\":\"6.18.54.1-microsoft-standard-WSL2\",\"MinAPIVersion\":\"1.40\",\"Module\":\"github.com/moby/moby/v2\",\"ModuleVersion\":\"v2.0.0+unknown\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.4.2\",\"Details\":{\"GitCommit\":\"b7a25261e029d68978bbf290df0a62fc819b3c51\"}},{\"Name\":\"runc\",\"Version\":\"1.5.2\",\"Details\":{\"GitCommit\":\"v1.5.2-0-g29dd3dc2\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"GitCommit\":\"0367cbe\",\"GoVersion\":\"go1.26.10\",\"KernelVersion\":\"6.18.54.1-microsoft-standard-WSL2\",\"BuildTime\":\"2026-10-20T18:45:02.000000000+00:00\"}}\n",
+    "compose": "Docker Compose version v5.6.1\n",
+    "image_id": "sha256:6fe72cb5d771889ec41ea3ba06aabac1bfd81fe31aa2b7cbc75d2483f42aebcc",
+    "lab_tools": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)\nPython 3.12.3\nnginx version: nginx/1.24.0 (Ubuntu)\nTShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).\nnginx\t1.24.0-2ubuntu7.19\nopenssl\t3.0.13-0ubuntu3.16\npython3-cryptography\t41.0.7-4ubuntu0.4\nstrongswan-swanctl\t5.9.13-2ubuntu4.24.04.5\ntcpdump\t4.99.4-3ubuntu4.24.04.1\ntshark\t4.2.2-1.1build3\nb6a951d40a5e9d32c51c54b2ebcfaa044d3d9efa\n"
+  },
+  "wan_interface": "eth1",
+  "http_fields": [
+    "frame.number",
+    "frame.time_epoch",
+    "ip.src",
+    "ip.dst",
+    "tcp.stream",
+    "http.request.method",
+    "http.request.uri",
+    "http.response.code"
+  ],
+  "http_packets": [
+    [
+      "4",
+      "1794083848.629740000",
+      "10.3.2.10",
+      "10.3.1.10",
+      "0",
+      "GET",
+      "/baseline.txt",
+      ""
+    ],
+    [
+      "6",
+      "1794083848.629918000",
+      "10.3.1.10",
+      "10.3.2.10",
+      "0",
+      "",
+      "",
+      "200"
+    ]
+  ],
+  "pcap": {
+    "path": "evidence/pcaps/M1_baseline_wan.pcap",
+    "bytes": 1221,
+    "sha256": "9d2a6dc6646d15deb81ebe6109535b3dc6d3cbb3dbfad7ccd39f3aea7c53ee9d",
+    "known_marker": "SCP-M1-G03-HTTP-CLEAR",
+    "body_frames": [
+      "6"
+    ],
+    "tcp_stream": "0",
+    "capture_filter": "host 10.3.2.10 and host 10.3.1.10 and tcp port 80"
+  },
+  "result": "PASS",
+  "utc_end": "2026-11-07T20:45:44.770609+00:00"
+}

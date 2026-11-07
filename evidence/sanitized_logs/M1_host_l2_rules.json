@@ -1,0 +1,25 @@
+{
+  "utc": "2026-11-07T20:36:31.710924+00:00",
+  "project": "scp-g03-m1",
+  "chain": "SCP_G03_L2",
+  "bridges": [
+    "br-603ac921a7a9",
+    "br-63e7c55733b6",
+    "br-1dd592f648ae"
+  ],
+  "scope": "Same input/output project bridge and lab source/destination only; no external interface, NAT, global sysctl or default policy changed.",
+  "rules": [
+    "-N SCP_G03_L2",
+    "-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-603ac921a7a9 -o br-603ac921a7a9 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-63e7c55733b6 -o br-63e7c55733b6 -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 10.3.0.0/16 -d 10.3.0.0/16 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 172.16.3.66/32 -d 10.3.2.0/24 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -s 10.3.2.0/24 -d 172.16.3.66/32 -i br-1dd592f648ae -o br-1dd592f648ae -m comment --comment scp-g03-m1-l2-transit -j ACCEPT",
+    "-A SCP_G03_L2 -m comment --comment scp-g03-m1-l2-transit -j RETURN"
+  ],
+  "reason": "Docker DOCKER-INTERNAL drops routed lab destinations on an internal bridge before they reach the gateway container."
+}

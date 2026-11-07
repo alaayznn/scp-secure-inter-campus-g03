@@ -1,5 +1,5 @@
 {
-  "utc": "2026-11-07T20:14:23.821077+00:00",
+  "utc": "2026-11-07T20:58:35.550995+00:00",
   "scope": "STATIC AND COMPOSE CONFIG ONLY where available; no image build/runtime/packet capture performed",
   "checks": [
     {
@@ -21,6 +21,11 @@
       "check": "network_isolation_declarations",
       "result": "PASS",
       "detail": "Static declarations only; not runtime proof."
+    },
+    {
+      "check": "isolated_bridge_mode",
+      "result": "PASS",
+      "detail": "No host IPv4 bridge address; runtime tests separately verify scoped L2 transit."
     },
     {
       "check": "no_host_exposure",
@@ -168,9 +173,14 @@
       "detail": "14 threat entries, >=8 required; contents reviewed separately."
     },
     {
-      "check": "no_fake_pcap",
+      "check": "submission_links_and_bookmarks",
       "result": "PASS",
-      "detail": "Baseline capture remains mandatory and absent; this PASS means no fake evidence, not capture acceptance."
+      "detail": "Combined PDF includes cover, all six documents, seven section bookmarks and clickable repository URI."
+    },
+    {
+      "check": "baseline_capture_integrity",
+      "result": "PASS",
+      "detail": "Real PCAP hash/body consistent with recorded successful runtime analysis; static integrity is not independent provenance review."
     }
   ],
   "pdf_pages": {
@@ -179,22 +189,24 @@
     "M1_PKI_Design": 3,
     "M1_ProtocolDesign": 5,
     "M1_STRIDE": 2,
-    "M1_TeamPlan": 2
+    "M1_TeamPlan": 2,
+    "M1_Submission": 20
   },
   "pdf_sha256": {
-    "M1_PKI_Design.pdf": "d7a68e07c6ddb4b30824215818b1c0e051db2b29084f1b9f9744ea79e7f4b83e",
+    "M1_PKI_Design.pdf": "bb037a8bc8f6cc8b46b6de8c9cc994fbc16aebaaef745eddba400ac053ce633a",
     "M1_ProtocolDesign.pdf": "3ab2041585e2f6c642deeddd11e9f460643fb3b86b3a17dcbe437b0d2d460d72",
-    "M1_Requirements.pdf": "a58efa312e1d4a29afa20dc97b012de0fd4123653ddac05a07aa9013eceff809",
+    "M1_Requirements.pdf": "30047eed02d1444d848363dbe2a8f3d38bfe8a55038f446c76587f30728d1ae3",
     "M1_STRIDE.pdf": "fb088da5883e8bcf25863039c5b3dd2cb14cb2fde639a000ae1012fe7847a739",
-    "M1_TeamPlan.pdf": "e6c617037ee4de28f72a12af249aedcbc5dc5d2a7505c171c3bcb1d520a9138d",
-    "M1_Topology_Trust.pdf": "326c8b16fad80d12a0418dd21314920bd230d14b51986c9972edb14760486ea1"
+    "M1_Submission.pdf": "99a5bab1ff2e5b412a383e7925e4d1e437c6fad0340b719a48af576050e33480",
+    "M1_TeamPlan.pdf": "7ab61b2deba98e222f3b87255cfda75b585684bd549981c02282053263d3ebfc",
+    "M1_Topology_Trust.pdf": "1f971ff6ed7122bbe94487ead6f6d4e06cda211ca487dd87820b4424f7be84fe"
   },
   "visual_review": {
     "status": "PASS",
-    "reviewer": "Document visual QA; member review not yet performed",
-    "utc": "2026-11-07T20:14:23.951901+00:00",
-    "pages_reviewed": 19,
-    "method": "Revised two-page TeamPlan rendered at 110 dpi and visually checked. Other five PDF hashes retain previous visual review. Diagrams, tables, original Arabic names and page breaks checked.",
-    "scope": "PDF appearance only; no running lab or teammate test claimed."
+    "reviewer": "Document visual QA; independent member review not claimed",
+    "utc": "2026-11-07T20:58:38.692561+00:00",
+    "combined_pages": 20,
+    "method": "All six sections visually reviewed in rendered package; condensed final cover re-rendered at 120 dpi and checked. Embedded section content streams match reviewed individual PDFs exactly. No text outside safe page bounds; three clickable resource URIs and seven bookmarks verified.",
+    "scope": "PDF appearance/link verification only; actual runtime checks are recorded separately."
   }
 }

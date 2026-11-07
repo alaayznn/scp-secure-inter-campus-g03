@@ -4,7 +4,9 @@ import argparse
 import json
 import os
 import re
+import struct
 import unicodedata
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 from reportlab.lib import colors
@@ -86,6 +88,40 @@ def arabic_visual(name):
         kind = 'medial' if left and right else 'final' if left else 'initial' if right else 'isolated'
         shaped.append(f.get(kind, ch))
     return ''.join(reversed(shaped))
+
+def baseline_table():
+    log=ROOT/'evidence/sanitized_logs/M1_runtime_checks.json'
+    data=json.loads(log.read_text(encoding='utf-8'))
+    if data.get('result')!='PASS': raise ValueError('A successful real runtime report is required')
+    pcap=data['pcap']; raw=(ROOT/pcap['path']).read_bytes()
+    endian={b'\xd4\xc3\xb2\xa1':'<',b'\xa1\xb2\xc3\xd4':'>'}.get(raw[:4])
+    if not endian: raise ValueError('Expected classic tcpdump PCAP')
+    offset=24; packets=0
+    while offset<len(raw):
+        _,_,length,_=struct.unpack(endian+'IIII',raw[offset:offset+16])
+        offset+=16+length; packets+=1
+    if offset!=len(raw): raise ValueError('Truncated PCAP')
+    stamp=float(data['http_packets'][0][1])
+    utc=datetime.fromtimestamp(stamp,timezone.utc)
+    local=utc.astimezone(timezone(timedelta(hours=3)))
+    rows=[['Observed item','Verified result'],
+          ['WAN capture',f'gw-hq {data["wan_interface"]}, 172.16.{G}.10/24; {packets} packets, {len(raw)} bytes.'],
+          ['HTTP time',utc.strftime('%d/%m/%Y %H:%M:%S UTC')+' / '+local.strftime('%H:%M:%S Asia/Amman')],
+          ['Request / response','Frame 4: GET /baseline.txt. Frame 6: HTTP 200 and '+pcap['known_marker']+' in readable payload.'],
+          ['Validation',f'{len(data["checks"])} runtime checks PASS; six healthy nodes, isolated networks and no VPN.'],
+          ['SHA-256',pcap['sha256']]]
+    return table(rows)
+
+def submission_links():
+    url=CFG['repository']['url']
+    entries=[('GitHub repository',url,url),
+             ('Real WAN capture',url+'/blob/main/evidence/pcaps/M1_baseline_wan.pcap','evidence/pcaps/M1_baseline_wan.pcap'),
+             ('Reproducible results',url+'/blob/main/evidence/sanitized_logs/M1_runtime_checks.json','evidence/sanitized_logs/M1_runtime_checks.json')]
+    rows=[['Resource','Clickable link']]
+    for label,target,display in entries:
+        link=Paragraph('<link href="'+html.escape(target,quote=True)+'" color="#176b91">'+html.escape(display)+'</link>',STYLES['cell'])
+        rows.append([label,link])
+    return table(rows)
 
 class Diagram(Flowable):
     def __init__(self, kind):
@@ -207,6 +243,10 @@ def parse(source):
             for m in CFG['members']:
                 rows.append([m['student_id'],Paragraph(html.escape(arabic_visual(m['name'])),STYLES['name'])])
             result.append(table(rows,[WIDTH*.29,WIDTH*.71])); i+=1
+        elif line=='{{SUBMISSION_LINKS}}':
+            result.extend([submission_links(),Spacer(1,9)]); i+=1
+        elif line=='{{BASELINE_SUMMARY}}':
+            result.extend([baseline_table(),Spacer(1,9)]); i+=1
         elif line.startswith('|'):
             rows=[]
             while i<len(lines) and lines[i].strip().startswith('|'):
@@ -233,9 +273,10 @@ def parse(source):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--only', choices=[p.stem for p in (ROOT/'docs/M1/source').glob('M1_*.md')])
+    parser.add_argument('--submission',action='store_true',help='Combine the retained cover and six M1 PDFs with bookmarks')
     args=parser.parse_args()
     out=ROOT/'docs/M1'; out.mkdir(parents=True,exist_ok=True)
-    for src in sorted((out/'source').glob('M1_*.md')):
+    for src in ([] if args.submission else sorted((out/'source').glob('M1_*.md'))):
         if args.only and src.stem!=args.only:
             continue
         dst=out/(src.stem+'.pdf')
@@ -243,6 +284,21 @@ def main():
              title=f'{src.stem} - SCP Group {GID}',author='SCP Group '+GID, pageCompression=1)
         doc.build(parse(src.read_text(encoding='utf-8')),onFirstPage=footer,onLaterPages=footer)
         print(dst.name)
+    if args.submission:
+        from pypdf import PdfWriter
+        temp=ROOT/'tmp/pdfs'; temp.mkdir(parents=True,exist_ok=True)
+        cover=temp/'Submission_Cover.pdf'
+        doc=SimpleDocTemplate(str(cover),pagesize=A4,rightMargin=48,leftMargin=48,topMargin=43,bottomMargin=54,
+              title='M1 Submission Package - Group '+GID,author='SCP Group '+GID)
+        doc.build(parse((out/'source/Submission_Cover.md').read_text(encoding='utf-8')),onFirstPage=footer,onLaterPages=footer)
+        writer=PdfWriter()
+        writer.append(str(cover),outline_item='Submission, repository and baseline evidence')
+        sections=[('M1_Requirements','Requirements and acceptance'),('M1_Topology_Trust','Topology and trust boundaries'),
+             ('M1_PKI_Design','PKI design'),('M1_ProtocolDesign','Protocol design'),('M1_STRIDE','STRIDE threats'),('M1_TeamPlan','Team and release plan')]
+        for name,title in sections: writer.append(str(out/(name+'.pdf')),outline_item=title)
+        writer.add_metadata({'/Title':'Secure Inter-Campus Communication Network - M1 - Group '+GID,'/Author':'SCP Group '+GID})
+        with open(out/'M1_Submission.pdf','wb') as output: writer.write(output)
+        print('M1_Submission.pdf')
 
 if __name__=='__main__':
     main()

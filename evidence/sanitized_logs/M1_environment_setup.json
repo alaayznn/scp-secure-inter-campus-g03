@@ -32,5 +32,32 @@
     "pcap_created": false,
     "automatic_reboot_performed": false
   },
-  "next_action": "Save work and restart Windows manually; launch Docker Desktop and review any first-run prompts; then verify engine and build/run the baseline."
+  "next_action": "Save work and restart Windows manually; launch Docker Desktop and review any first-run prompts; then verify engine and build/run the baseline.",
+  "post_restart_observation": {
+    "utc": "2026-11-07T20:54:01.0654645Z",
+    "hypervisor_present": true,
+    "windows_cbs_restart_pending": false
+  },
+  "current_validation": {
+    "utc": "2026-11-07T20:54:01.674232+00:00",
+    "engine_running": true,
+    "image_built": true,
+    "six_nodes_healthy": true,
+    "runtime_checks": 44,
+    "runtime_result": "PASS",
+    "real_pcap": {
+      "path": "evidence/pcaps/M1_baseline_wan.pcap",
+      "bytes": 1221,
+      "sha256": "9d2a6dc6646d15deb81ebe6109535b3dc6d3cbb3dbfad7ccd39f3aea7c53ee9d",
+      "known_marker": "SCP-M1-G03-HTTP-CLEAR",
+      "body_frames": [
+        "6"
+      ],
+      "tcp_stream": "0",
+      "capture_filter": "host 10.3.2.10 and host 10.3.1.10 and tcp port 80"
+    },
+    "pcap_packets": 10,
+    "ubuntu_base_digest": "sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852",
+    "no_automatic_reboot_performed": true
+  }
 }

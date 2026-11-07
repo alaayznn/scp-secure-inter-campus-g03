@@ -54,7 +54,8 @@ def main():
     nets = {}
     for name, prefix in [('wan', '172.16.' + num), ('hq', '10.' + num + '.1'), ('branch', '10.' + num + '.2')]:
         nets[name] = {'driver': 'bridge', 'internal': True, 'enable_ipv6': False,
-                      'driver_opts': {'com.docker.network.bridge.enable_ip_masquerade': 'false'},
+                      'driver_opts': {'com.docker.network.bridge.enable_ip_masquerade': 'false',
+                                      'com.docker.network.bridge.gateway_mode_ipv4': 'isolated'},
                       'ipam': {'config': [{'subnet': prefix + '.0/24', 'gateway': prefix + '.254'}]}}
     data = {'name': f'scp-g{two}-m1', 'services': services, 'networks': nets}
     # JSON is a YAML 1.2 subset, consumed by Compose v2 without a host YAML package.

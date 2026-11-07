@@ -25,6 +25,7 @@ def main():
     expected={'gw-hq','gw-branch','web-hq','kdc','client-br','attacker'}
     check('six_nodes_three_networks', set(services)==expected and set(nets)=={'wan','hq','branch'}, 'Exact node/network inventory checked.')
     check('network_isolation_declarations', all(n['internal'] is True and n['enable_ipv6'] is False and n['driver_opts']['com.docker.network.bridge.enable_ip_masquerade']=='false' for n in nets.values()), 'Static declarations only; not runtime proof.')
+    check('isolated_bridge_mode',all(n['driver_opts'].get('com.docker.network.bridge.gateway_mode_ipv4')=='isolated' for n in nets.values()),'No host IPv4 bridge address; runtime tests separately verify scoped L2 transit.')
     check('no_host_exposure', all(not any(k in s for k in ('ports','network_mode','privileged')) and not any('docker.sock' in v for v in s['volumes']) for s in services.values()), 'No published port, host network, privileged flag or Docker socket.')
     check('mount_scope', all('..:/work:ro' in s['volumes'] for s in services.values()) and sum('../evidence:/evidence:rw' in s['volumes'] for s in services.values())==1 and '../evidence:/evidence:rw' in services['gw-hq']['volumes'], 'Repository read-only everywhere; only gw-hq evidence writable. Root key must be outside repository.')
     token='${GROUP_NUM:?Copy .env.example to .env and verify GROUP_NUM}'
@@ -80,7 +81,23 @@ def main():
     check('actual_group_pdf_addresses',all(s in topo for s in ('10.3.1.10','10.3.2.10','172.16.3.10','172.16.3.20','172.16.3.66','portal.g03.scp.lab')), 'Actual G3 values extracted from final PDF.')
     stride=texts.get('M1_STRIDE','')
     check('lab_threat_count',all(f'S{i:02}' in stride for i in range(1,15)),'14 threat entries, >=8 required; contents reviewed separately.')
-    check('no_fake_pcap',not list((ROOT/'evidence/pcaps').glob('*.pcap*')),'Baseline capture remains mandatory and absent; this PASS means no fake evidence, not capture acceptance.')
+    package=ROOT/'docs/M1/M1_Submission.pdf'
+    if package.exists():
+        reader=PdfReader(package)
+        uris={str(a.get_object().get('/A',{}).get('/URI')) for page in reader.pages for a in page.get('/Annots',[]) if a.get_object().get('/A',{}).get('/URI')}
+        repo=cfg.get('repository',{}).get('url')
+        check('submission_links_and_bookmarks',repo in uris and len(reader.outline)==7 and len(reader.pages)>sum(pagecounts.values()),
+              'Combined PDF includes cover, all six documents, seven section bookmarks and clickable repository URI.')
+        pagecounts['M1_Submission']=len(reader.pages)
+    capture=ROOT/'evidence/pcaps/M1_baseline_wan.pcap'
+    runtime_path=ROOT/'evidence/sanitized_logs/M1_runtime_checks.json'
+    if capture.exists() and runtime_path.exists():
+        runtime=json.loads(runtime_path.read_text(encoding='utf-8'))
+        integrity=(runtime.get('result')=='PASS' and capture.stat().st_size>24 and runtime.get('pcap',{}).get('sha256')==hashlib.sha256(capture.read_bytes()).hexdigest()
+            and f'SCP-M1-G{gid}-HTTP-CLEAR'.encode() in capture.read_bytes())
+        check('baseline_capture_integrity',integrity,'Real PCAP hash/body consistent with recorded successful runtime analysis; static integrity is not independent provenance review.')
+    else:
+        check('baseline_capture_pending',not capture.exists(),'No capture has been supplied; runtime acceptance remains pending. This check does not claim capture acceptance.')
     path=ROOT/'evidence/sanitized_logs/M1_static_review.json'; path.parent.mkdir(parents=True,exist_ok=True)
     hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'docs/M1').glob('*.pdf')}
     visual={'status':'PENDING','method':'Render all final PDF pages with bundled Poppler, inspect diagrams/tables/names, then record observed result.'}
@@ -90,7 +107,7 @@ def main():
             visual=previous.get('visual_review',visual)
     log={'utc':datetime.now(timezone.utc).isoformat(),'scope':'STATIC AND COMPOSE CONFIG ONLY where available; no image build/runtime/packet capture performed','checks':checks,'pdf_pages':pagecounts,'pdf_sha256':hashes,'visual_review':visual}
     path.write_text(json.dumps(log,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print(f'{len(checks)} static checks; failures: {sum(c["result"]=="FAIL" for c in checks)}. Runtime NOT TESTED.')
+    print(f'{len(checks)} static checks; failures: {sum(c["result"]=="FAIL" for c in checks)}. Runtime validation is recorded separately.')
     for c in checks:
         if c['result']!='PASS': print(c)
     if any(c['result']=='FAIL' for c in checks): raise SystemExit(1)

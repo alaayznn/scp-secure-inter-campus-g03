@@ -53,12 +53,14 @@ These are cumulative project constraints relevant to M1 design, not claims of im
 ## M1 acceptance gates
 | Gate | Acceptance / current state |
 | A1 | Six required PDFs exist and are visually reviewed; editable sources retained. Status is recorded in evidence/sanitized_logs/M1_static_review.json. |
-| A2 | All diagrams, tables, host mappings and Compose agree on Group {{GG}}. Static checks possible now; live routes not yet proved. |
+| A2 | Group {{GG}} names/addresses agree across diagrams, Compose and live node inspection. Runtime route/isolation checks are recorded in evidence/sanitized_logs/M1_runtime_checks.json. |
 | A3 | >=8 lab-specific threats with likelihood, impact, controls and planned checks. See S. |
-| A4 | Six running nodes, client-br HTTP to web-hq, actual gw-hq WAN interface capture with readable known response. PENDING runtime and PCAP. |
-| A5 | Actual commands/interface/filter/frame numbers/tester/date documented with real PCAP, not screenshots alone. PENDING. |
-| A6 | Private GitHub repository, preserved history, secret review, instructor access and timestamped M1 tag after every gate. PENDING; no M1 tag now. |
+| A4 | PASS: six healthy nodes, client-br HTTP to web-hq and real gw-hq WAN capture. evidence/pcaps/M1_baseline_wan.pcap contains 10 packets, readable GET at frame 4 and HTTP 200/body at frame 6. |
+| A5 | PASS for scripted execution: capture session records UTC, eth1 WAN interface, filter and commands; runtime log records requester and results. Independent member retest/review remains unclaimed. |
+| A6 | Assignment requires private GitHub plus final timestamped M1 tag. Team requested Public instead; anonymous reading is verified. Instructor acceptance of this visibility exception and M1 tag remain pending. Secrets are scanned; no tag is created while gates remain unresolved. |
 | A7 | Starter Kit replacement discrepancy disclosed and acceptance clarified; member data confirmed. Names/IDs received; kit approval remains unresolved. |
 
 ## Optional choices and exclusions
 PDF rather than XLSX for STRIDE is explicitly permitted. Additional threats and machine-readable static validation are optional improvements. Suggested interface names/ports in section 7.1 are not all mandatory; gateway swanctl paths are fixed. Future-stage directories reserve structure only. No future-stage certificates, keys, executable protocol, attack or VPN configuration are delivered as working M1 functionality.
+
+The real baseline uses internal, isolated Docker bridges with masquerading disabled. Docker's internal-subnet filter also blocked legitimate off-subnet packets travelling to a router container. lab/host_l2_transit.py adds only same-project-bridge, lab-address rules in DOCKER-USER. No global firewall policy, bridge sysctl, external interface or NAT rule is changed. Both the rules and live egress restrictions are checked by the M1 runner.

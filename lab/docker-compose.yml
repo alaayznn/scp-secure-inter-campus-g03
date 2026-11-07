@@ -442,7 +442,8 @@
       "internal": true,
       "enable_ipv6": false,
       "driver_opts": {
-        "com.docker.network.bridge.enable_ip_masquerade": "false"
+        "com.docker.network.bridge.enable_ip_masquerade": "false",
+        "com.docker.network.bridge.gateway_mode_ipv4": "isolated"
       },
       "ipam": {
         "config": [
@@ -458,7 +459,8 @@
       "internal": true,
       "enable_ipv6": false,
       "driver_opts": {
-        "com.docker.network.bridge.enable_ip_masquerade": "false"
+        "com.docker.network.bridge.enable_ip_masquerade": "false",
+        "com.docker.network.bridge.gateway_mode_ipv4": "isolated"
       },
       "ipam": {
         "config": [
@@ -474,7 +476,8 @@
       "internal": true,
       "enable_ipv6": false,
       "driver_opts": {
-        "com.docker.network.bridge.enable_ip_masquerade": "false"
+        "com.docker.network.bridge.enable_ip_masquerade": "false",
+        "com.docker.network.bridge.gateway_mode_ipv4": "isolated"
       },
       "ipam": {
         "config": [

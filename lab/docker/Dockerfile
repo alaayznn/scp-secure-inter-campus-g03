@@ -8,7 +8,7 @@ RUN printf '#!/bin/sh\nexit 101\n' > /usr/sbin/policy-rc.d \
        bash ca-certificates git curl wget openssl nginx \
        iproute2 iptables iputils-ping procps tcpdump tshark nmap \
        strongswan-charon strongswan-swanctl strongswan-pki \
-       libcharon-extra-plugins libstrongswan-extra-plugins \
+       libcharon-extra-plugins libstrongswan-standard-plugins libstrongswan-extra-plugins \
        python3 python3-cryptography python3-pytest \
     && rm -rf /var/lib/apt/lists/*
 RUN git clone --depth 1 --branch v3.2.1 https://github.com/testssl/testssl.sh.git /opt/testssl \
@@ -17,7 +17,7 @@ RUN git clone --depth 1 --branch v3.2.1 https://github.com/testssl/testssl.sh.gi
     && ln -s /opt/testssl/testssl.sh /usr/local/bin/testssl.sh \
     && python3 -c "import sys,cryptography; assert sys.version_info[:2] == (3,12)" \
     && openssl version | grep -E '^OpenSSL 3\.' \
-    && swanctl --version \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' strongswan-swanctl)" ge 5.9 \
     && dpkg-query -W > /opt/scp-image-packages.txt
 WORKDIR /work
 ENTRYPOINT ["bash", "/opt/scp/roles/baseline-entrypoint.sh"]

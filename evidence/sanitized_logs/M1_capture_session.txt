@@ -1,0 +1,7 @@
+UTC start: 2026-11-07T20:37:27Z
+Tester: Scripted run requested by 2350906014; independent member retest pending
+Role: gw-hq
+Interface: eth1
+Capture filter: host 10.3.2.10 and host 10.3.1.10 and tcp port 80
+Command: tcpdump -i eth1 -nn -s 0 -U -w /evidence/pcaps/M1_baseline_wan.pcap host 10.3.2.10 and host 10.3.1.10 and tcp port 80
+3: eth1    inet 172.16.3.10/24 brd 172.16.3.255 scope global eth1\       valid_lft forever preferred_lft forever
